@@ -1,0 +1,22 @@
+{
+  "name": "p5.js-pdf",
+  "version": "0.0.1",
+  "description": "A simple module for exporting pdf with p5.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenozeng/p5.js-pdf.git"
+  },
+  "keywords": [
+    "p5.js",
+    "pdf"
+  ],
+  "author": "Zeno Zeng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zenozeng/p5.js-pdf/issues"
+  }
+}
