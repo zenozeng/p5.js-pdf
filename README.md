@@ -45,12 +45,12 @@ This program incorporates work covered by the following copyright and permission
 
     ```
     Copyright (c) 2012 Jason Siefken, https://github.com/siefkenj/
-    2013 Chris Dowling, https://github.com/gingerchris
-    2013 Trinh Ho, https://github.com/ineedfat
-    2013 Edwin Alejandro Perez, https://github.com/eaparango
-    2013 Norah Smith, https://github.com/burnburnrocket
-    2014 Diego Casorran, https://github.com/diegocr
-    2014 James Robb, https://github.com/jamesbrobb
+                  2013 Chris Dowling, https://github.com/gingerchris
+                  2013 Trinh Ho, https://github.com/ineedfat
+                  2013 Edwin Alejandro Perez, https://github.com/eaparango
+                  2013 Norah Smith, https://github.com/burnburnrocket
+                  2014 Diego Casorran, https://github.com/diegocr
+                  2014 James Robb, https://github.com/jamesbrobb
     ```
 
 - jspdf.plugin.png_support.js (MIT)
