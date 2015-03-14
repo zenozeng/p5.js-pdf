@@ -31,9 +31,14 @@
         this.pdf.addPage();
     };
 
-    PDF.prototype.save = function(filename) {
+    // must be called onclick otherwise will be prevented by browser
+    PDF.prototype.download = function(filename) {
         filename = filename || "untitled.pdf";
-        // this.pdf.save(filename);
+        var a = document.createElement('a');
+        a.href = this.toObjectURL();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
     };
 
     // Convert to Object URL using URL.createObjectURL

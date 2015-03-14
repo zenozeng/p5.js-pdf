@@ -6,6 +6,12 @@ A simple module for export pdf with p5.js.
 
 [TODO]
 
+## FAQ
+
+### Browser Compatibility
+
+Should work in the latest versions of evergreen browsers and IE10+.
+
 ## License (MIT)
 
 Copyright (c) 2015 Zeno Zeng.
