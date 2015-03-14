@@ -4,6 +4,7 @@
   "description": "A simple module for exporting pdf with p5.js.",
   "main": "index.js",
   "scripts": {
+    "build": "browserify index.js > dist/p5.pdf.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zenozeng/p5.js-pdf/issues"
+  },
+  "dependencies": {
+    "zlib-browserify": "0.0.3"
   }
 }
