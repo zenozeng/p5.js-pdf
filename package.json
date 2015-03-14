@@ -20,7 +20,5 @@
   "bugs": {
     "url": "https://github.com/zenozeng/p5.js-pdf/issues"
   },
-  "dependencies": {
-    "zlib-browserify": "0.0.3"
-  }
+  "dependencies": {}
 }

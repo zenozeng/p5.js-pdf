@@ -25,10 +25,7 @@
  */
 
 var jsPDF = require('./jspdf');
-var zlib = require('zlib-browserify');
-console.log(zlib);
-var FlateStream = zlib.FlateStream;
-var Deflater = zlib.Deflater;
+var FlateStream = require('./zlib')['FlateStream'];
 var PNG = require('./png');
 
 

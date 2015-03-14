@@ -18,6 +18,6 @@ var interval = setInterval(function() {
 
 setTimeout(function() {
     clearInterval(interval);
-    var url = pdf.toDataURL();
-    console.log(url);
+    var url = pdf.toObjectURL();
+    window.location.href = url;
 }, 6000);

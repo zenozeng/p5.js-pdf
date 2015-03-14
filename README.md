@@ -2,12 +2,9 @@
 
 A simple module for export pdf with p5.js.
 
-## Build
+## Usage
 
-```bash
-sudo npm install -g browserify
-npm run build
-```
+[TODO]
 
 ## License (MIT)
 
@@ -61,12 +58,17 @@ This program incorporates work covered by the following copyright and permission
     Copyright (c) 2014 James Robb, https://github.com/jamesbrobb
     ```
 
-- zlib.js (MIT)
-
-    JavaScript Zlib Library
+- zlib.js (from pdf.js) (MIT)
 
     ```
-    Copyright (c) 2012 imaya
+    Copyright (c) 2011 Mozilla Foundation
+
+    Contributors: Andreas Gal <gal@mozilla.com>
+                  Chris G Jones <cjones@mozilla.com>
+                  Shaon Barman <shaon.barman@gmail.com>
+                  Vivien Nicolas <21@vingtetun.org>
+                  Justin D'Arcangelo <justindarc@gmail.com>
+                  Yury Delendik
     ```
 
 - PNG.js (MIT)
@@ -74,6 +76,13 @@ This program incorporates work covered by the following copyright and permission
     ```
     Copyright (c) 2011 Devon Govett
     ```
+
+## Build
+
+```bash
+sudo npm install -g browserify
+npm run build
+```
 
 ## Links
 
