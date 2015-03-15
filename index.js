@@ -21,6 +21,8 @@
         this.canvas = options.canvas || document.getElementById('defaultCanvas');
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+
+        this.imageType = options.imageType || 'JPEG';
     };
 
     // start recording every frame automatically
@@ -33,8 +35,8 @@
 
     // manually capture current canvas
     PDF.prototype.capture = function() {
-        var img = this.canvas.toDataURL('image/jpeg', 0.9);
-        this.pdf.addImage(img, 'JPEG', 0, 0, this.width, this.height);
+        var img = this.canvas.toDataURL('image/' + this.imageType, 0.9);
+        this.pdf.addImage(img, this.imageType, 0, 0, this.width, this.height);
         this.nextPage();
     };
 

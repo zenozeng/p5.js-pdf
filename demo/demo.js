@@ -5,7 +5,7 @@ var pdf;
 function setup() {
     // init frame
     createCanvas(400, 400);
-    frameRate(10);
+    frameRate(30);
     background(255);
 
     // init tree
@@ -17,7 +17,7 @@ function setup() {
     });
 
     // init PDF
-    pdf = new p5.PDF(); // should be called after #defaultCanvas is ready
+    pdf = new p5.PDF({imageType: 'PNG'}); // should be called after #defaultCanvas is ready
     // pdf.beginRecord();
 }
 
@@ -32,7 +32,8 @@ function drawTree(tree) {
     var x2 = x - length * Math.cos(angle),
         y2 = y - length * Math.sin(angle);
 
-    var minLength = width / 24;
+    // var minLength = width / 24;
+    var minLength = width / 10;
 
     if(length > minLength) {
         strokeWeight(4);
@@ -73,7 +74,7 @@ function draw() {
         drawTree(tree);
         pdf.capture();
     } else {
-        // console.log(pdf.toObjectURL());
+        console.log(pdf.toObjectURL());
         noLoop();
     }
 }

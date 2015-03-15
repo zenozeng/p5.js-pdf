@@ -43,6 +43,8 @@ See also:
 
 - https://github.com/MrRio/jsPDF/issues/300
 
+However, if you must, you can use `new p5.PDF({imageType: 'PNG'})`.
+
 ## License (MIT)
 
 Copyright (c) 2015 Zeno Zeng.
