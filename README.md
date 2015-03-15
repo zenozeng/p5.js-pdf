@@ -5,9 +5,12 @@ A simple module for export pdf with p5.js.
 ## Usage
 
 ```javascript
-var pdf = new p5.PDF();
+var pdf;
 
 function setup() {
+    createCanvas(640, 640);
+
+    pdf = new p5.PDF(); // should be called after #defaultCanvas is ready
     pdf.beginRecord();
 }
 
@@ -29,6 +32,16 @@ setTimeout(function() {
 ### Browser Compatibility
 
 Should work in the latest versions of evergreen browsers and IE10+.
+
+### Why not use PNG by default?
+
+Chrome may crash when there are too many PNG in jsPDF.
+
+See also:
+
+- https://github.com/MrRio/jsPDF/issues/359
+
+- https://github.com/MrRio/jsPDF/issues/300
 
 ## License (MIT)
 

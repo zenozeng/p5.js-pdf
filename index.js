@@ -12,17 +12,29 @@
 
     var jsPDF = require('./jspdf/index');
 
-    var PDF = function(canvas, options) {
+    var PDF = function(options) {
+        if(!options) {
+            options = {};
+        }
+
         this.pdf = new jsPDF();
-        this.canvas = canvas && canvas.canvas;
+        this.canvas = options.canvas || document.getElementById('defaultCanvas');
         this.width = this.canvas.width;
         this.height = this.canvas.height;
     };
 
-    // capture current canvas
+    // start recording every frame automatically
+    PDF.prototype.beginRecord = function() {
+    };
+
+    // stop automatically recording frames
+    PDF.prototype.endRecord = function() {
+    };
+
+    // manually capture current canvas
     PDF.prototype.capture = function() {
-        var jpg = this.canvas.toDataURL('image/png', 0.9);
-        this.pdf.addImage(jpg, 'PNG', 0, 0, this.width, this.height);
+        var img = this.canvas.toDataURL('image/jpeg', 0.9);
+        this.pdf.addImage(img, 'JPEG', 0, 0, this.width, this.height);
         this.nextPage();
     };
 
