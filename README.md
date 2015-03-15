@@ -35,7 +35,9 @@ setTimeout(function() {
 
 ### Browser Compatibility
 
-Should work in the latest versions of evergreen browsers and IE10+.
+Basically, it should work in the latest versions of evergreen browsers and IE10+.
+Note that even in IE11, due to the lack of support to download attrbute,
+`pdf.save(filename)` may simply open PDF directly instead.
 
 ### Why not use PNG by default?
 
