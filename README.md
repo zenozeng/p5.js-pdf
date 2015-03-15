@@ -2,10 +2,6 @@
 
 A simple module for export pdf with p5.js.
 
-## Status
-
-Still working.
-
 ## Usage
 
 ```javascript
@@ -32,6 +28,10 @@ setTimeout(function() {
     window.location.href = pdf.toObjectURL();
 }, 5000);
 ```
+
+## Full Documentation
+
+https://zenozeng.github.io/p5.js-pdf/doc/
 
 ## FAQ
 
@@ -128,6 +128,7 @@ This program incorporates work covered by the following copyright and permission
 
 ```bash
 sudo npm install -g browserify
+sudo npm install -g jsdoc
 npm run build
 ```
 

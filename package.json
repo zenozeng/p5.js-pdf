@@ -4,7 +4,7 @@
   "description": "A simple module for exporting pdf with p5.js.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify index.js > dist/p5.pdf.js",
+    "build": "browserify index.js > dist/p5.pdf.js && jsdoc index.js -d doc/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
