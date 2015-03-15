@@ -17,8 +17,16 @@ function setup() {
     });
 
     // init PDF
-    pdf = new p5.PDF({imageType: 'PNG'}); // should be called after #defaultCanvas is ready
+    pdf = new p5.PDF({ppi: 100}); // should be called after #defaultCanvas is ready
     // pdf.beginRecord();
+
+    document.getElementById('open').onclick = function() {
+        window.location.href = pdf.toObjectURL();
+    };
+
+    document.getElementById('download').onclick = function() {
+        pdf.save('perlin-noise-tree.pdf');
+    };
 }
 
 var perlinNoiseSeed = 1.101;
@@ -32,8 +40,7 @@ function drawTree(tree) {
     var x2 = x - length * Math.cos(angle),
         y2 = y - length * Math.sin(angle);
 
-    // var minLength = width / 24;
-    var minLength = width / 10;
+    var minLength = width / 24;
 
     if(length > minLength) {
         strokeWeight(4);
@@ -57,14 +64,14 @@ function drawTree(tree) {
         x: x2,
         y: y2,
         length: length / 1.414,
-        angle: angle + noise(perlinNoiseSeed) * 0.3 - Math.PI / 4
+        angle: angle + noise(perlinNoiseSeed) * 0.5 - Math.PI / 4
     });
     // right
     queue.push({
         x: x2,
         y: y2,
         length: length / 1.414,
-        angle: angle + noise(perlinNoiseSeed) * 0.3 + Math.PI / 4
+        angle: angle + noise(perlinNoiseSeed) * 0.5 + Math.PI / 4
     });
 }
 
@@ -74,7 +81,7 @@ function draw() {
         drawTree(tree);
         pdf.capture();
     } else {
-        console.log(pdf.toObjectURL());
         noLoop();
     }
 }
+

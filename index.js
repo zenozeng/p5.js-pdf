@@ -22,6 +22,8 @@
         this.width = this.canvas.width;
         this.height = this.canvas.height;
 
+        this.ppi = options.ppi || 72;
+
         this.imageType = options.imageType || 'JPEG';
     };
 
@@ -35,9 +37,23 @@
 
     // manually capture current canvas
     PDF.prototype.capture = function() {
-        var img = this.canvas.toDataURL('image/' + this.imageType, 0.9);
-        this.pdf.addImage(img, this.imageType, 0, 0, this.width, this.height);
-        this.nextPage();
+        var img = this.canvas.toDataURL('image/' + this.imageType, 0.95);
+
+        var width = this.width,
+            height = this.height;
+
+        // apply options.ppi
+        var pixelsPerMM = this.ppi * 0.03937;
+        width /= pixelsPerMM;
+        height /= pixelsPerMM;
+
+        // max width for A4
+        if(width > 210) {
+            width = 210;
+            height = this.height / this.width * width;
+        }
+
+        this.pdf.addImage(img, this.imageType, 0, 0, width, height);
     };
 
     // go to nextpage
@@ -46,7 +62,7 @@
     };
 
     // must be called onclick otherwise will be prevented by browser
-    PDF.prototype.download = function(filename) {
+    PDF.prototype.save = function(filename) {
         filename = filename || "untitled.pdf";
         var a = document.createElement('a');
         a.download = filename;
