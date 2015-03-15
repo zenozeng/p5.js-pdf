@@ -18,7 +18,6 @@ function setup() {
 
     // init PDF
     pdf = new p5.PDF({ppi: 100}); // should be called after #defaultCanvas is ready
-    // pdf.beginRecord();
 
     document.getElementById('open').onclick = function() {
         window.location.href = pdf.toObjectURL();

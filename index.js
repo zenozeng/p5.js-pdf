@@ -30,14 +30,6 @@
         this.yOffset = 0;
     };
 
-    // start recording every frame automatically
-    PDF.prototype.beginRecord = function() {
-    };
-
-    // stop automatically recording frames
-    PDF.prototype.endRecord = function() {
-    };
-
     // manually capture current canvas
     PDF.prototype.capture = function() {
         var img = this.canvas.toDataURL('image/' + this.imageType, 0.95);
