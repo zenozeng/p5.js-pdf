@@ -15,18 +15,20 @@ function setup() {
     createCanvas(640, 640);
 
     pdf = new p5.PDF(); // should be called after #defaultCanvas is ready
-    pdf.beginRecord();
 }
 
 function draw() {
     // draw something here
 
-    // tell PDF to go to the next page
+    // manually add new page
     // pdf.nextPage();
+
+    // capture current frame
+    pdf.capture();
 }
 
 setTimeout(function() {
-    pdf.endRecord();
+    noLoop();
     window.location.href = pdf.toObjectURL();
 }, 5000);
 ```
