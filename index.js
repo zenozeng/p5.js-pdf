@@ -25,6 +25,9 @@
         this.ppi = options.ppi || 72;
 
         this.imageType = options.imageType || 'JPEG';
+
+        // current y offset at this page
+        this.yOffset = 0;
     };
 
     // start recording every frame automatically
@@ -47,17 +50,28 @@
         width /= pixelsPerMM;
         height /= pixelsPerMM;
 
-        // max width for A4
-        if(width > 210) {
-            width = 210;
+        // scale if necessary
+        var A4 = {
+            width: 210,
+            height: 297
+        };
+        if(width > A4.width) {
+            width = A4.width;
             height = this.height / this.width * width;
         }
 
-        this.pdf.addImage(img, this.imageType, 0, 0, width, height);
+        // current page doesn't have enough room
+        if(this.yOffset + height > A4.height) {
+            this.nextPage();
+        }
+
+        this.pdf.addImage(img, this.imageType, 0, this.yOffset, width, height);
+        this.yOffset += height;
     };
 
     // go to nextpage
     PDF.prototype.nextPage = function() {
+        this.yOffset = 0;
         this.pdf.addPage();
     };
 

@@ -5,8 +5,8 @@ var pdf;
 function setup() {
     // init frame
     createCanvas(400, 400);
-    frameRate(30);
-    background(255);
+    frameRate(40);
+    background(0xff);
 
     // init tree
     queue.push({
