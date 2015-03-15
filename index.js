@@ -49,10 +49,13 @@
     PDF.prototype.download = function(filename) {
         filename = filename || "untitled.pdf";
         var a = document.createElement('a');
+        a.download = filename;
         a.href = this.toObjectURL();
         document.body.appendChild(a);
-        a.click();
-        a.remove();
+        setTimeout(function() {
+            a.click();
+            a.remove();
+        }, 0);
     };
 
     // Convert to Object URL using URL.createObjectURL
