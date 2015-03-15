@@ -4,7 +4,25 @@ A simple module for export pdf with p5.js.
 
 ## Usage
 
-[TODO]
+```javascript
+var pdf = new p5.PDF();
+
+function setup() {
+    pdf.beginRecord();
+}
+
+function draw() {
+    // draw something here
+
+    // tell PDF to go to the next page
+    // pdf.nextPage();
+}
+
+setTimeout(function() {
+    pdf.endRecord();
+    window.location.href = pdf.toObjectURL();
+}, 5000);
+```
 
 ## FAQ
 
