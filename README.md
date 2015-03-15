@@ -31,7 +31,7 @@ setTimeout(function() {
 
 ## Full Documentation
 
-https://zenozeng.github.io/p5.js-pdf/doc/
+https://zenozeng.github.io/p5.js-pdf/doc/p5.PDF.html
 
 ## FAQ
 

@@ -24,21 +24,22 @@
 
 (function(p5) {
 
+
     "use strict";
 
     var jsPDF = require('./jspdf/index');
 
     /**
-     * Create a new p5.PDF instance
-     * @class
+     * Create a new p5.PDF instance.
      *
+     * @class p5.PDF
      * @param {Object} options - The options for p5.PDF instance
-     * @param {Canvas} options.canvas - The <canvas> to capture, defaults to document.getElementById('defaultCanvas')
+     * @param {Canvas} options.canvas - The canvas to capture, defaults to document.getElementById('defaultCanvas')
      * @param {Number} options.ppi - The ppi for frames
      * @param {String} options.imageType - Use which imageType, defaults to JPEG.
      * @return {p5.PDF} a p5.PDF instance
      */
-    var PDF = function(options) {
+    function PDF(options) {
         if(!options) {
             options = {};
         }
@@ -57,10 +58,14 @@
     };
 
     /**
-     * Capture current frame
+     * Capture current frame.
      *
      * Convert canvas to image and save it in pdf,
      * and will open new page automatically if necessary.
+     *
+     * @instance
+     * @function capture
+     * @memberof p5.PDF
      */
     PDF.prototype.capture = function() {
         var img = this.canvas.toDataURL('image/' + this.imageType, 0.95);
@@ -93,19 +98,26 @@
     };
 
     /**
-     * Open new page
+     * Open new page.
      *
+     * @instance
+     * @function nextPage
+     * @memberof p5.PDF
      */
     PDF.prototype.nextPage = function() {
         this.yOffset = 0;
         this.pdf.addPage();
     };
 
-    // must be called onclick otherwise will be prevented by browser
-
     /**
-     * Save current PDF
+     * Save current PDF.
      *
+     * Note that this method must be called on click event,
+     * otherwise will be blocked by browser.
+     *
+     * @instance
+     * @function save
+     * @memberof p5.PDF
      * @param {String} filename - Filename for your pdf file, defaults to untitled.pdf
      */
     PDF.prototype.save = function(filename) {
@@ -121,8 +133,11 @@
     };
 
     /**
-     * Generate a object url for current PDF
+     * Generate a object url for current PDF.
      *
+     * @instance
+     * @function toObjectURL
+     * @memberof p5.PDF
      * @return {String} objectURL
      */
     PDF.prototype.toObjectURL = function() {
@@ -130,11 +145,14 @@
     };
 
     /**
-     * Generate a data url for current PDF
+     * Generate a data url for current PDF.
      *
      * Note that you should always use toObjectURL if possible,
      * generating dataurl for large pdf is very expensive.
      *
+     * @instance
+     * @function toDataURL
+     * @memberof p5.PDF
      * @return {String} dataurl
      */
     PDF.prototype.toDataURL = function() {
