@@ -34,7 +34,8 @@
      * @class p5.PDF
      * @param {Object} options - The options for p5.PDF instance
      * @param {Canvas} options.canvas - The canvas to capture, defaults to document.getElementById('defaultCanvas')
-     * @param {Number} options.ppi - The ppi for frames
+     * @param {Number} options.columns - Columns
+     * @param {Number} options.rows - Rows
      * @param {String} options.imageType - Use which imageType, defaults to JPEG.
      * @return {p5.PDF} a p5.PDF instance
      */
@@ -48,12 +49,71 @@
         this.width = this.canvas.width;
         this.height = this.canvas.height;
 
-        this.ppi = options.ppi || 72;
-
         this.imageType = options.imageType || 'JPEG';
 
-        // current y offset at this page
-        this.yOffset = 0;
+        // init current offset at this page
+        this.offset = {x: 0, y: 0};
+    };
+
+
+    /**
+     * Add image to current pdf
+     *
+     * @instance
+     * @private
+     * @function _addImage
+     * @memberof p5.PDF
+     */
+    PDF.prototype._addImage = function(image) {
+        var width = this.width,
+            height = this.height;
+
+        // A4 Paper
+        var paper = {
+            width: 210,
+            height: 297
+        };
+
+        var columns = this.columns,
+            rows = this.rows;
+
+        var maxImageWidth = paper.width / columns,
+            maxImageHeight = paper.height / rows;
+
+        var ratio = width / height;
+        var imageSize = {};
+        if(ratio > maxImageWidth / maxImageHeight) {
+            imageSize = {width: maxImageWidth, height: maxImageWidth / ratio};
+        } else {
+            imageSize = {width: maxImageHeight * ratio, height: maxImageHeight};
+        }
+
+        var imagePadding = {
+            top: (paper.height / rows - imageSize.height) / 2,
+            right: (paper.width / columns - imageSize.width) / 2,
+            left: (paper.width / columns - imageSize.width) / 2,
+            bottom: (paper.height / rows - imageSize.height) / 2
+        };
+
+        // current row doesn't have enough room, go to next row
+        if(this.offset.x + imageSize.width + imagePadding.left + imagePadding.right > paper.width) {
+            this.offset.x = 0;
+            this.offset.y += imageSize.height + imagePadding.top + imagePadding.bottom;
+        }
+
+        // current page doesn't have enough room
+        if(this.offset.y + imageSize.height + imagePadding.top + imagePadding.bottom > paper.height) {
+            this.nextPage();
+        }
+
+        this.pdf.addImage(image,
+                          this.imageType,
+                          this.offset.x + imagePadding.left,
+                          this.offset.y + imagePadding.top,
+                          this.imageSize.width,
+                          this.imageSize.height);
+
+        this.offset.x += imageSize.width + imagePadding.left + imagePadding.right;
     };
 
     /**
@@ -67,33 +127,8 @@
      * @memberof p5.PDF
      */
     PDF.prototype.capture = function() {
-        var img = this.canvas.toDataURL('image/' + this.imageType, 0.95);
-
-        var width = this.width,
-            height = this.height;
-
-        // apply options.ppi
-        var pixelsPerMM = this.ppi * 0.03937;
-        width /= pixelsPerMM;
-        height /= pixelsPerMM;
-
-        // scale if necessary
-        var A4 = {
-            width: 210,
-            height: 297
-        };
-        if(width > A4.width) {
-            width = A4.width;
-            height = this.height / this.width * width;
-        }
-
-        // current page doesn't have enough room
-        if(this.yOffset + height > A4.height) {
-            this.nextPage();
-        }
-
-        this.pdf.addImage(img, this.imageType, 0, this.yOffset, width, height);
-        this.yOffset += height;
+        var image = this.canvas.toDataURL('image/' + this.imageType, 0.95);
+        this._addImage(image);
     };
 
     /**
@@ -104,7 +139,7 @@
      * @memberof p5.PDF
      */
     PDF.prototype.nextPage = function() {
-        this.yOffset = 0;
+        this.offset = {x: 0, y: 0};
         this.pdf.addPage();
     };
 
