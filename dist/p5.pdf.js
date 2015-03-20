@@ -86,16 +86,15 @@
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
-     * @param {Number} options.columns - Columns
-     * @param {Number} options.rows - Rows
+     * @param {Number} options.columns - Columns (defaults to 3)
+     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
+     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
      * @return jsPDF Object
      */
     PDF.prototype._generate = function(options) {
 
         options = options || {};
-
-        // A4 Paper
-        var paper = options.landscape ? {width: 297, height: 210} : {width: 210, height: 297};
 
         // init jsPDF Object
         var pdf = new jsPDF(options.landscape ? 'landscape' : undefined);
@@ -103,6 +102,12 @@
         // get rows and columns
         var rows = options.rows || 3;
         var columns = options.columns || 3;
+
+        // determine paper size & margin
+        var paper = options.landscape ? {width: 297, height: 210} : {width: 210, height: 297}; // A4
+        paper.margin = options.margin || {top: 20, right: 20, bottom: 20, left: 20};
+        paper.width -= paper.margin.right + paper.margin.left;
+        paper.height -= paper.margin.top + paper.margin.bottom;
 
         // determine image size
         var imageSize = {};
@@ -137,10 +142,11 @@
         this.elements.forEach(function(elem) {
             if(elem === 'NEW_PAGE') {
                 nextPage();
+                return;
             }
 
             // current row doesn't have enough room, go to next row
-            if(offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width) {
+            if(offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width ) {
                 offset.x = 0;
                 offset.y += imageSize.height + imageMargin.top + imageMargin.bottom;
             }
@@ -153,8 +159,8 @@
             // add image
             pdf.addImage(elem,
                          _this.imageType,
-                         offset.x + imageMargin.left,
-                         offset.y + imageMargin.top,
+                         offset.x + imageMargin.left + paper.margin.left,
+                         offset.y + imageMargin.top + paper.margin.top,
                          imageSize.width,
                          imageSize.height);
 

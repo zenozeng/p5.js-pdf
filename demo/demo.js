@@ -79,6 +79,7 @@ function draw() {
     if(tree) {
         drawTree(tree);
         pdf.capture();
+        pdf.nextPage();
     } else {
         noLoop();
     }
