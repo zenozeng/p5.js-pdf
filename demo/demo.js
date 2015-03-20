@@ -34,6 +34,14 @@ function setup() {
     document.getElementById('open-landscape').onclick = function() {
         window.location.href = pdf.toObjectURL({landscape: true});
     };
+
+    document.getElementById('open-custom-image-margin').onclick = function() {
+        window.location.href = pdf.toObjectURL({imageMargin: {top: 5, right: 5, bottom: 5, left: 5}});
+    };
+
+    document.getElementById('open-layout-single-page').onclick = function() {
+        window.location.href = pdf.toObjectURL({layout: 'single-page'});
+    };
 }
 
 var perlinNoiseSeed = 1.101;

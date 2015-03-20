@@ -88,6 +88,7 @@
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
      * @param {Number} options.columns - Columns (defaults to 3)
      * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
      * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
      * @return jsPDF Object
@@ -99,15 +100,50 @@
         // init jsPDF Object
         var pdf = new jsPDF(options.landscape ? 'landscape' : undefined);
 
-        // get rows and columns
-        var rows = options.rows || 3;
-        var columns = options.columns || 3;
-
         // determine paper size & margin
         var paper = options.landscape ? {width: 297, height: 210} : {width: 210, height: 297}; // A4
         paper.margin = options.margin || {top: 20, right: 20, bottom: 20, left: 20};
         paper.width -= paper.margin.right + paper.margin.left;
         paper.height -= paper.margin.top + paper.margin.bottom;
+
+        // determine rows and columns
+        var rows = options.rows || 3;
+        var columns = options.columns || 3;
+
+        if(options.layout === "single-page") {
+            // calculate max elements per page
+            var maxElementsPerPage = 0;
+            var count = 0;
+            for(var i = 0; i < this.elements.length; i++) {
+                if(this.elements[i] === 'NEW_PAGE') {
+                    if(count > maxElementsPerPage) {
+                        maxElementsPerPage = count;
+                    }
+                    count = 0;
+                } else {
+                    count++;
+                }
+            }
+            if(maxElementsPerPage === 0) {
+                maxElementsPerPage = this.elements.length;
+            }
+            // determine rows and columns
+            // k = rows / column = canvasRatio / paperRatio
+            var k = (this.canvas.width / this.canvas.height) / (paper.width / paper.height);
+            // rows * columns >= maxElementsPerPage
+            rows = 0;
+            columns = 0;
+            while(rows * columns < maxElementsPerPage) {
+                console.log('loop', columns, rows);
+                columns = parseInt(columns + 1);
+                rows = parseInt(columns * k);
+            }
+
+            console.log('debug', columns, rows);
+
+            // FIXME: options.imageMargin is ignored
+            options.imageMargin = null;
+        }
 
         // determine image size
         var imageSize = {};
@@ -177,6 +213,13 @@
      * @instance
      * @function toObjectURL
      * @memberof p5.PDF
+     * @param {Object} options - The options for generating pdf
+     * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
+     * @param {Number} options.columns - Columns (defaults to 3)
+     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
+     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
+     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
      * @return {String} objectURL
      */
     PDF.prototype.toObjectURL = function(options) {
@@ -193,6 +236,13 @@
      * @instance
      * @function toDataURL
      * @memberof p5.PDF
+     * @param {Object} options - The options for generating pdf
+     * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
+     * @param {Number} options.columns - Columns (defaults to 3)
+     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
+     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
+     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
      * @return {String} dataurl
      */
     PDF.prototype.toDataURL = function(options) {
@@ -209,7 +259,14 @@
      * @instance
      * @function save
      * @memberof p5.PDF
-     * @param {String} filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {Object} options - The options for generating pdf
+     * @param {String} options.filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
+     * @param {Number} options.columns - Columns (defaults to 3)
+     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
+     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
+     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
      */
     PDF.prototype.save = function(options) {
         options = options || {};
