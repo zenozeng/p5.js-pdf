@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "build": "browserify index.js > dist/p5.pdf.js && jsdoc index.js -d doc/"
+    }
+}

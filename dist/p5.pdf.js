@@ -35,7 +35,6 @@
      * @class p5.PDF
      * @param {Object} options - The options for p5.PDF instance
      * @param {Canvas} options.canvas - The canvas to capture, defaults to document.getElementById('defaultCanvas')
-     * @param {Number} options.ppi - The ppi for frames
      * @param {String} options.imageType - Use which imageType, defaults to JPEG.
      * @return {p5.PDF} a p5.PDF instance
      */
@@ -46,55 +45,25 @@
 
         this.pdf = new jsPDF();
         this.canvas = options.canvas || document.getElementById('defaultCanvas');
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
-
-        this.ppi = options.ppi || 72;
 
         this.imageType = options.imageType || 'JPEG';
 
-        // current y offset at this page
-        this.yOffset = 0;
+        this.elements = []; // captured images and page breaks
     };
+
 
     /**
      * Capture current frame.
      *
-     * Convert canvas to image and save it in pdf,
-     * and will open new page automatically if necessary.
+     * Convert canvas to image and save it in this.elements
      *
      * @instance
      * @function capture
      * @memberof p5.PDF
      */
     PDF.prototype.capture = function() {
-        var img = this.canvas.toDataURL('image/' + this.imageType, 0.95);
-
-        var width = this.width,
-            height = this.height;
-
-        // apply options.ppi
-        var pixelsPerMM = this.ppi * 0.03937;
-        width /= pixelsPerMM;
-        height /= pixelsPerMM;
-
-        // scale if necessary
-        var A4 = {
-            width: 210,
-            height: 297
-        };
-        if(width > A4.width) {
-            width = A4.width;
-            height = this.height / this.width * width;
-        }
-
-        // current page doesn't have enough room
-        if(this.yOffset + height > A4.height) {
-            this.nextPage();
-        }
-
-        this.pdf.addImage(img, this.imageType, 0, this.yOffset, width, height);
-        this.yOffset += height;
+        var image = this.canvas.toDataURL('image/' + this.imageType, 0.95);
+        this.elements.push(image);
     };
 
     /**
@@ -105,31 +74,95 @@
      * @memberof p5.PDF
      */
     PDF.prototype.nextPage = function() {
-        this.yOffset = 0;
-        this.pdf.addPage();
+        this.elements.push('NEW_PAGE');
     };
 
     /**
-     * Save current PDF.
-     *
-     * Note that this method must be called on click event,
-     * otherwise will be blocked by browser.
+     * Generate PDF
      *
      * @instance
-     * @function save
+     * @private
+     * @function _generate
      * @memberof p5.PDF
-     * @param {String} filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {Object} options - The options for generating pdf
+     * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
+     * @param {Number} options.columns - Columns
+     * @param {Number} options.rows - Rows
+     * @return jsPDF Object
      */
-    PDF.prototype.save = function(filename) {
-        filename = filename || "untitled.pdf";
-        var a = document.createElement('a');
-        a.download = filename;
-        a.href = this.toObjectURL();
-        document.body.appendChild(a);
-        setTimeout(function() {
-            a.click();
-            a.remove();
-        }, 0);
+    PDF.prototype._generate = function(options) {
+
+        options = options || {};
+
+        // A4 Paper
+        var paper = options.landscape ? {width: 297, height: 210} : {width: 210, height: 297};
+
+        // init jsPDF Object
+        var pdf = new jsPDF(options.landscape ? 'landscape' : undefined);
+
+        // get rows and columns
+        var rows = options.rows || 3;
+        var columns = options.columns || 3;
+
+        // determine image size
+        var imageSize = {};
+
+        var maxImageWidth = paper.width / columns,
+            maxImageHeight = paper.height / rows;
+
+        var canvasRatio = this.canvas.width / this.canvas.height;
+        if(canvasRatio > maxImageWidth / maxImageHeight) {
+            imageSize = {width: maxImageWidth, height: maxImageWidth / canvasRatio};
+        } else {
+            imageSize = {width: maxImageHeight * canvasRatio, height: maxImageHeight};
+        }
+
+        // determine image margin
+        var imageMargin = options.imageMargin || {
+            top: (paper.height / rows - imageSize.height) / 2,
+            right: (paper.width / columns - imageSize.width) / 2,
+            left: (paper.width / columns - imageSize.width) / 2,
+            bottom: (paper.height / rows - imageSize.height) / 2
+        };
+
+        // init current offset at this page
+        var offset = {x: 0, y: 0};
+
+        // add images & pages
+        var _this = this;
+        var nextPage = function() {
+            offset = {x: 0, y: 0};
+            pdf.addPage();
+        };
+        this.elements.forEach(function(elem) {
+            if(elem === 'NEW_PAGE') {
+                nextPage();
+            }
+
+            // current row doesn't have enough room, go to next row
+            if(offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width) {
+                offset.x = 0;
+                offset.y += imageSize.height + imageMargin.top + imageMargin.bottom;
+            }
+
+            // current page doesn't have enough room
+            if(offset.y + imageSize.height + imageMargin.top + imageMargin.bottom > paper.height) {
+                nextPage();
+            }
+
+            // add image
+            pdf.addImage(elem,
+                         _this.imageType,
+                         offset.x + imageMargin.left,
+                         offset.y + imageMargin.top,
+                         imageSize.width,
+                         imageSize.height);
+
+            // update offset
+            offset.x += imageSize.width + imageMargin.left + imageMargin.right;
+        });
+
+        return pdf;
     };
 
     /**
@@ -140,8 +173,9 @@
      * @memberof p5.PDF
      * @return {String} objectURL
      */
-    PDF.prototype.toObjectURL = function() {
-        return this.pdf.output('bloburi');
+    PDF.prototype.toObjectURL = function(options) {
+        var pdf = this._generate(options);
+        return pdf.output('bloburi');
     };
 
     /**
@@ -155,8 +189,33 @@
      * @memberof p5.PDF
      * @return {String} dataurl
      */
-    PDF.prototype.toDataURL = function() {
-        return this.pdf.output('datauristring');
+    PDF.prototype.toDataURL = function(options) {
+        var pdf = this._generate(options);
+        return pdf.output('datauristring');
+    };
+
+    /**
+     * Save current PDF.
+     *
+     * Note that this method must be called on click event,
+     * otherwise will be blocked by browser.
+     *
+     * @instance
+     * @function save
+     * @memberof p5.PDF
+     * @param {String} filename - Filename for your pdf file, defaults to untitled.pdf
+     */
+    PDF.prototype.save = function(options) {
+        options = options || {};
+        var filename = options.filename || "untitled.pdf";
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = this.toObjectURL(options);
+        document.body.appendChild(a);
+        setTimeout(function() {
+            a.click();
+            a.remove();
+        }, 0);
     };
 
     p5.PDF = PDF;
