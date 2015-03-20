@@ -26,6 +26,14 @@ function setup() {
     document.getElementById('download').onclick = function() {
         pdf.save('perlin-noise-tree.pdf');
     };
+
+    document.getElementById('open-cols-rows').onclick = function() {
+        window.location.href = pdf.toObjectURL({columns: 3, rows: 4});
+    };
+
+    document.getElementById('open-landscape').onclick = function() {
+        window.location.href = pdf.toObjectURL({landscape: true});
+    };
 }
 
 var perlinNoiseSeed = 1.101;
@@ -79,7 +87,6 @@ function draw() {
     if(tree) {
         drawTree(tree);
         pdf.capture();
-        pdf.nextPage();
     } else {
         noLoop();
     }
