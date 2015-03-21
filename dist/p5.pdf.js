@@ -106,25 +106,33 @@
                 //  area available
                 var width = areaWidth - columns * (imageMargin.left + imageMargin.right);
                 var height = areaHeight - rows * (imageMargin.top + imageMargin.bottom);
+                if ((width < 0) || (height < 0)) {
+                    continue;
+                }
 
                 // area for images
                 var imageArea;
-                if (imageRatio > width / height) {
-                    imageArea = {width: width, height: width / imageRatio};
+                var imageAreaRatio = imageRatio * columns / rows;
+                if (imageAreaRatio > width / height) {
+                    imageArea = {width: width, height: width / imageAreaRatio};
                 } else {
-                    imageArea = {width: height * imageRatio, height: height};
+                    imageArea = {width: height * imageAreaRatio, height: height};
                 }
 
                 // area for images and their margins
                 var occupiedWidth = imageArea.width + columns * (imageMargin.left + imageMargin.right);
                 var occupiedHeight = imageArea.height + rows * (imageMargin.top + imageMargin.bottom);
 
-                var occupancy = occupiedWidth * occupiedHeight / areaWidth / areaHeight;
+                // calculate occupancy
+                var occupancy = ((occupiedWidth * occupiedHeight) / (areaWidth * areaHeight)) * (imageCount / (rows * columns));
                 if (occupancy > result.occupancy) {
                     result = {rows: rows, columns: columns, occupancy: occupancy};
                 }
+
+                // console.log({width: occupiedWidth, height: occupiedHeight, occupancy: occupancy, rows: rows, columns: columns});
             }
         }
+        console.log(result);
         return result;
     };
 
@@ -238,8 +246,6 @@
                     + (pos.row - 1) * (imageMargin.top + imageSize.height + imageMargin.bottom)
                     + imageMargin.top
             };
-            console.log(pos);
-            console.log(offset);
             pdf.addImage(elem,
                          _this.imageType,
                          offset.x,
