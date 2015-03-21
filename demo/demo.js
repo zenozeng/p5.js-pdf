@@ -6,7 +6,7 @@ function setup() {
     // init frame
     createCanvas(400, 400);
     frameRate(40);
-    background(0xff);
+    background(0xee);
 
     // init tree
     queue.push({

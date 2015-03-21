@@ -192,24 +192,23 @@
         // determine image size
         var imageSize = {};
 
-        var maxImageWidth = paper.width / columns,
-            maxImageHeight = paper.height / rows;
+        var maxImageWidth = paper.width / columns - imageMargin.left - imageMargin.right,
+            maxImageHeight = paper.height / rows - imageMargin.top - imageMargin.bottom;
 
         var imageRatio = this.canvas.width / this.canvas.height;
-        var imageBoxRatio = imageRatio * (1 + imageMargin.left + imageMargin.right) / (1 + imageMargin.top + imageMargin.bottom);
-        if (imageBoxRatio > maxImageWidth / maxImageHeight) {
+        if (imageRatio > maxImageWidth / maxImageHeight) {
             imageSize = {width: maxImageWidth, height: maxImageWidth / imageRatio};
         } else {
             imageSize = {width: maxImageHeight * imageRatio, height: maxImageHeight};
         }
 
         // init current offset at this page
-        var offset = {x: 0, y: 0};
+        var pos = {row: 1, column: 1};
 
         // add images & pages
         var _this = this;
         var nextPage = function() {
-            offset = {x: 0, y: 0};
+            pos = {row: 1, column: 1};
             pdf.addPage();
         };
         this.elements.forEach(function(elem) {
@@ -219,26 +218,36 @@
             }
 
             // current row doesn't have enough room, go to next row
-            if (offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width ) {
-                offset.x = 0;
-                offset.y += imageSize.height + imageMargin.top + imageMargin.bottom;
+            if (pos.column > columns) {
+                pos.column = 1;
+                pos.row++;
             }
 
             // current page doesn't have enough room
-            if (offset.y + imageSize.height + imageMargin.top + imageMargin.bottom > paper.height) {
+            if (pos.row > rows) {
                 nextPage();
             }
 
             // add image
+            var offset = {
+                x: paper.margin.left
+                    + (pos.column - 1) * (imageMargin.left + imageSize.width + imageMargin.right)
+                    + imageMargin.left,
+                y: paper.margin.top
+                    + (pos.row - 1) * (imageMargin.top + imageSize.height + imageMargin.bottom)
+                    + imageMargin.top
+            };
+            console.log(pos);
+            console.log(offset);
             pdf.addImage(elem,
                          _this.imageType,
-                         offset.x + imageMargin.left + paper.margin.left,
-                         offset.y + imageMargin.top + paper.margin.top,
+                         offset.x,
+                         offset.y,
                          imageSize.width,
                          imageSize.height);
 
             // update offset
-            offset.x += imageSize.width + imageMargin.left + imageMargin.right;
+            pos.column++;
         });
 
         return pdf;
