@@ -1,10 +1,16 @@
-## v0.3
+## v0.2.1
 
 - Add PDF.prototype._calculateRowsAndColumns
 
     Better auto calculation for rows and columns
 
-## v0.2
+- Fix process of options.imageMargin
+
+- Make all images in the middle by default
+
+    Will reset margin.left and margin.right unless options.imageMargin
+
+## v0.2.0
 
 - Add options.columns & options.rows
 
