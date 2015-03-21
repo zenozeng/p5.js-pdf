@@ -128,11 +128,8 @@
                 if (occupancy > result.occupancy) {
                     result = {rows: rows, columns: columns, occupancy: occupancy};
                 }
-
-                // console.log({width: occupiedWidth, height: occupiedHeight, occupancy: occupancy, rows: rows, columns: columns});
             }
         }
-        console.log(result);
         return result;
     };
 
@@ -209,6 +206,13 @@
             imageSize = {width: maxImageWidth, height: maxImageWidth / imageRatio};
         } else {
             imageSize = {width: maxImageHeight * imageRatio, height: maxImageHeight};
+        }
+
+        // reset margin.left and margin.right unless options.imageMargin to make all images in the middle
+        if (!options.margin) {
+            var offset = paper.width - (imageSize.width + imageMargin.left + imageMargin.right)* columns;
+            paper.margin.right += offset / 2;
+            paper.margin.left += offset / 2;
         }
 
         // init current offset at this page

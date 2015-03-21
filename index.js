@@ -207,6 +207,13 @@
             imageSize = {width: maxImageHeight * imageRatio, height: maxImageHeight};
         }
 
+        // reset margin.left and margin.right unless options.imageMargin to make all images in the middle
+        if (!options.margin) {
+            var offset = paper.width - (imageSize.width + imageMargin.left + imageMargin.right)* columns;
+            paper.margin.right += offset / 2;
+            paper.margin.left += offset / 2;
+        }
+
         // init current offset at this page
         var pos = {row: 1, column: 1};
 
