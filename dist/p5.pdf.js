@@ -281,8 +281,8 @@
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
-     * @param {Number} options.columns - Columns (defaults to 3)
-     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {Number} options.columns - Columns, will use single-page layout if not set
+     * @param {Number} options.rows - Rows, will use single-page layout if not set
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
      * @param {Number} options.margin.top - marginTop in mm, defaults to 20
@@ -308,8 +308,8 @@
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
-     * @param {Number} options.columns - Columns (defaults to 3)
-     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {Number} options.columns - Columns, will use single-page layout if not set
+     * @param {Number} options.rows - Rows, will use single-page layout if not set
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
      * @param {Number} options.margin.top - marginTop in mm, defaults to 20
@@ -336,8 +336,8 @@
      * @param {Object} options - The options for generating pdf
      * @param {String} options.filename - Filename for your pdf file, defaults to untitled.pdf
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
-     * @param {Number} options.columns - Columns (defaults to 3)
-     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {Number} options.columns - Columns, will use single-page layout if not set
+     * @param {Number} options.rows - Rows, will use single-page layout if not set
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
      * @param {Number} options.margin.top - marginTop in mm, defaults to 20
