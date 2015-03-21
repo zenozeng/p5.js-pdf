@@ -144,8 +144,12 @@
      * @param {Number} options.columns - Columns (defaults to 3)
      * @param {Number} options.rows - Rows (defaults to 3)
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
-     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
-     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
+     * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
+     * @param {Number} options.margin.top - marginTop in mm, defaults to 20
+     * @param {Number} options.margin.right - marginRight in mm, by default will put images in the middle
+     * @param {Number} options.margin.bottom - marginBottom in mm, defaults to 20
+     * @param {Number} options.margin.left - marginLeft in mm, by default will put images in the middle
+     * @param {Object} options.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
      * @return jsPDF Object
      */
     PDF.prototype._generate = function(options) {
@@ -274,8 +278,12 @@
      * @param {Number} options.columns - Columns (defaults to 3)
      * @param {Number} options.rows - Rows (defaults to 3)
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
-     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
-     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
+     * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
+     * @param {Number} options.margin.top - marginTop in mm, defaults to 20
+     * @param {Number} options.margin.right - marginRight in mm, by default will put images in the middle
+     * @param {Number} options.margin.bottom - marginBottom in mm, defaults to 20
+     * @param {Number} options.margin.left - marginLeft in mm, by default will put images in the middle
+     * @param {Object} options.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
      * @return {String} objectURL
      */
     PDF.prototype.toObjectURL = function(options) {
@@ -297,8 +305,12 @@
      * @param {Number} options.columns - Columns (defaults to 3)
      * @param {Number} options.rows - Rows (defaults to 3)
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
-     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
-     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
+     * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
+     * @param {Number} options.margin.top - marginTop in mm, defaults to 20
+     * @param {Number} options.margin.right - marginRight in mm, by default will put images in the middle
+     * @param {Number} options.margin.bottom - marginBottom in mm, defaults to 20
+     * @param {Number} options.margin.left - marginLeft in mm, by default will put images in the middle
+     * @param {Object} options.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
      * @return {String} dataurl
      */
     PDF.prototype.toDataURL = function(options) {
@@ -321,8 +333,12 @@
      * @param {Number} options.columns - Columns (defaults to 3)
      * @param {Number} options.rows - Rows (defaults to 3)
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
-     * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
-     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
+     * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
+     * @param {Number} options.margin.top - marginTop in mm, defaults to 20
+     * @param {Number} options.margin.right - marginRight in mm, by default will put images in the middle
+     * @param {Number} options.margin.bottom - marginBottom in mm, defaults to 20
+     * @param {Number} options.margin.left - marginLeft in mm, by default will put images in the middle
+     * @param {Object} options.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
      */
     PDF.prototype.save = function(options) {
         options = options || {};
