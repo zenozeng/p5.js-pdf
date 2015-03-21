@@ -38,7 +38,7 @@
      * @return {p5.PDF} a p5.PDF instance
      */
     function PDF(options) {
-        if(!options) {
+        if (!options) {
             options = {};
         }
 
@@ -77,6 +77,57 @@
     };
 
     /**
+     * Calculate rows and columns (for single-page layout)
+     *
+     * The rows and columns calculated will meet the following conditions:
+     *     (1) rows * columns >= imageCount
+     *     (2) the occupancy rate will be as higher as possible
+     *
+     * @static
+     * @private
+     * @function _calculateRowsAndColumns
+     * @memberof p5.PDF
+     * @param {Number} areaWidth - Width of area (in mm)
+     * @param {Number} areaHeight - Height of area (in mm)
+     * @param {Number} imageCount - Count of images per page
+     * @param {Number} imageRatio - image.width / image.height
+     * @param {Object} imageMargin - Margins for each image (in mm), {top, right, bottom, left}
+     * @return {Object} {rows, columns}
+     */
+    PDF.prototype._calculateRowsAndColumns = function(areaWidth, areaHeight, imageCount, imageRatio, imageMargin) {
+        var result = {rows: 0, columns: 0, occupancy: 0};
+        for (var rows = 1; rows < imageCount; rows++) {
+            for (var columns = 1; columns < imageCount; columns++) {
+                if (rows * columns < imageCount) {
+                    continue;
+                }
+
+                //  area available
+                var width = areaWidth - columns * (imageMargin.left + imageMargin.right);
+                var height = areaHeight - rows * (imageMargin.top + imageMargin.bottom);
+
+                // area for images
+                var imageArea;
+                if (imageRatio > width / height) {
+                    imageArea = {width: width, height: width / imageRatio};
+                } else {
+                    imageArea = {width: height * imageRatio, height: height};
+                }
+
+                // area for images and their margins
+                var occupiedWidth = imageArea.width + columns * (imageMargin.left + imageMargin.right);
+                var occupiedHeight = imageArea.height + rows * (imageMargin.top + imageMargin.bottom);
+
+                var occupancy = occupiedWidth * occupiedHeight / areaWidth / areaHeight;
+                if (occupancy > result.occupancy) {
+                    result = {rows: rows, columns: columns, occupancy: occupancy};
+                }
+            }
+        }
+        return result;
+    };
+
+    /**
      * Generate PDF
      *
      * @instance
@@ -89,7 +140,7 @@
      * @param {Number} options.rows - Rows (defaults to 3)
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} option.margin - Margins for PDF in mm {top, right, bottom, left}, all defaults to 20
-     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}
+     * @param {Object} option.imageMargin - Margin for images in mm {top, right, bottom, left}, all defaults to 1mm
      * @return jsPDF Object
      */
     PDF.prototype._generate = function(options) {
@@ -105,17 +156,20 @@
         paper.width -= paper.margin.right + paper.margin.left;
         paper.height -= paper.margin.top + paper.margin.bottom;
 
+        // determine image margin
+        var imageMargin = options.imageMargin || {top: 1, right: 1, left: 1, bottom: 1};
+
         // determine rows and columns
         var rows = options.rows || 3;
         var columns = options.columns || 3;
 
-        if(options.layout === "single-page") {
+        if (options.layout === "single-page") {
             // calculate max elements per page
             var maxElementsPerPage = 0;
             var count = 0;
-            for(var i = 0; i < this.elements.length; i++) {
-                if(this.elements[i] === 'NEW_PAGE') {
-                    if(count > maxElementsPerPage) {
+            for (var i = 0; i < this.elements.length; i++) {
+                if (this.elements[i] === 'NEW_PAGE') {
+                    if (count > maxElementsPerPage) {
                         maxElementsPerPage = count;
                     }
                     count = 0;
@@ -123,22 +177,16 @@
                     count++;
                 }
             }
-            if(maxElementsPerPage === 0) {
+            if (maxElementsPerPage === 0) {
                 maxElementsPerPage = this.elements.length;
             }
-            // determine rows and columns
-            // k = rows / column = canvasRatio / paperRatio
-            // rows * columns >= maxElementsPerPage
-            var k = (this.canvas.width / this.canvas.height) / (paper.width / paper.height);
-            rows = 0;
-            columns = 0;
-            while(rows * columns < maxElementsPerPage) {
-                columns = parseInt(columns + 1);
-                rows = parseInt(columns * k);
-            }
-
-            // FIXME: options.imageMargin is ignored
-            options.imageMargin = null;
+            var result = this._calculateRowsAndColumns(paper.width,
+                                                       paper.height,
+                                                       maxElementsPerPage,
+                                                       this.canvas.width / this.canvas.height,
+                                                       imageMargin);
+            rows = result.rows;
+            columns = result.columns;
         }
 
         // determine image size
@@ -147,20 +195,13 @@
         var maxImageWidth = paper.width / columns,
             maxImageHeight = paper.height / rows;
 
-        var canvasRatio = this.canvas.width / this.canvas.height;
-        if(canvasRatio > maxImageWidth / maxImageHeight) {
-            imageSize = {width: maxImageWidth, height: maxImageWidth / canvasRatio};
+        var imageRatio = this.canvas.width / this.canvas.height;
+        var imageBoxRatio = imageRatio * (1 + imageMargin.left + imageMargin.right) / (1 + imageMargin.top + imageMargin.bottom);
+        if (imageBoxRatio > maxImageWidth / maxImageHeight) {
+            imageSize = {width: maxImageWidth, height: maxImageWidth / imageRatio};
         } else {
-            imageSize = {width: maxImageHeight * canvasRatio, height: maxImageHeight};
+            imageSize = {width: maxImageHeight * imageRatio, height: maxImageHeight};
         }
-
-        // determine image margin
-        var imageMargin = options.imageMargin || {
-            top: (paper.height / rows - imageSize.height) / 2,
-            right: (paper.width / columns - imageSize.width) / 2,
-            left: (paper.width / columns - imageSize.width) / 2,
-            bottom: (paper.height / rows - imageSize.height) / 2
-        };
 
         // init current offset at this page
         var offset = {x: 0, y: 0};
@@ -172,19 +213,19 @@
             pdf.addPage();
         };
         this.elements.forEach(function(elem) {
-            if(elem === 'NEW_PAGE') {
+            if (elem === 'NEW_PAGE') {
                 nextPage();
                 return;
             }
 
             // current row doesn't have enough room, go to next row
-            if(offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width ) {
+            if (offset.x + imageSize.width + imageMargin.left + imageMargin.right > paper.width ) {
                 offset.x = 0;
                 offset.y += imageSize.height + imageMargin.top + imageMargin.bottom;
             }
 
             // current page doesn't have enough room
-            if(offset.y + imageSize.height + imageMargin.top + imageMargin.bottom > paper.height) {
+            if (offset.y + imageSize.height + imageMargin.top + imageMargin.bottom > paper.height) {
                 nextPage();
             }
 
