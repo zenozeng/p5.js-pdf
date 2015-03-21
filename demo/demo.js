@@ -24,7 +24,7 @@ function setup() {
     };
 
     document.getElementById('download').onclick = function() {
-        pdf.save('perlin-noise-tree.pdf');
+        pdf.save({filename: 'perlin-noise-tree.pdf'});
     };
 
     document.getElementById('open-cols-rows').onclick = function() {
@@ -37,10 +37,6 @@ function setup() {
 
     document.getElementById('open-custom-image-margin').onclick = function() {
         window.location.href = pdf.toObjectURL({imageMargin: {top: 5, right: 5, bottom: 5, left: 5}});
-    };
-
-    document.getElementById('open-layout-single-page').onclick = function() {
-        window.location.href = pdf.toObjectURL({layout: 'single-page'});
     };
 }
 

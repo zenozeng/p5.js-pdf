@@ -141,8 +141,8 @@
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
      * @param {Bool} options.landscape - Whether set PDF as landscape (defaults to false)
-     * @param {Number} options.columns - Columns (defaults to 3)
-     * @param {Number} options.rows - Rows (defaults to 3)
+     * @param {Number} options.columns - Columns, will use single-page layout if not set
+     * @param {Number} options.rows - Rows, will use single-page layout if not set
      * @param {String} options.layout - Special Layout {"single-page": display all images in one page}
      * @param {Object} options.margin - Margins for PDF in mm {top, right, bottom, left}
      * @param {Number} options.margin.top - marginTop in mm, defaults to 20
@@ -164,6 +164,11 @@
         paper.margin = options.margin || {top: 20, right: 20, bottom: 20, left: 20};
         paper.width -= paper.margin.right + paper.margin.left;
         paper.height -= paper.margin.top + paper.margin.bottom;
+
+        // use single-page layout by default
+        if (!options.rows || !options.columns) {
+            options.layout = 'single-page';
+        }
 
         // determine image margin
         var imageMargin = options.imageMargin || {top: 1, right: 1, left: 1, bottom: 1};

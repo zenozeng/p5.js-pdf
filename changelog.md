@@ -1,3 +1,7 @@
+## v0.2.2
+
+- Use single-page layout by default
+
 ## v0.2.1
 
 - Add PDF.prototype._calculateRowsAndColumns
