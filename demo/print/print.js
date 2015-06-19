@@ -11,11 +11,13 @@
         var win = iframe.contentWindow;
         var style = doc.createElement('style');
         style.innerHTML = styles;
-        doc.body.appendChild(style);
+        doc.head.appendChild(style);
         var div = doc.createElement('div');
         div.innerHTML = html;
         doc.body.appendChild(div);
-        iframe.contentWindow.print.call(win);
+        win.focus(); // required for IE
+        win.print();
+        iframe.remove();
     };
 
     window.setup = function() {
