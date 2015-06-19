@@ -1,0 +1,51 @@
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/mocha/mocha.js"></script>
+    <script src="bower_components/requirejs/require.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+
+    <script src="bower_components/p5.js/lib/p5.js"></script>
+    <script src="../dist/p5.svg.js"></script>
+
+
+    <link type="text/css" rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+    <link type="text/css" rel="stylesheet" href="bower_components/mocha/mocha.css">
+    <link type="text/css" rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>p5.js-svg - Unit Test</h1>
+    <div id="mocha"></div>
+    <div id="test-graph">
+    </div>
+    <h2>SVG & Canvas</h2>
+    <div class="th">
+        <div>SVG</div>
+        <div>Canvas</div>
+    </div>
+    <script>
+     require.config({
+         baseUrl: '',
+         urlArgs: "_=" + (new Date()).getTime(),
+         paths: {
+             testRender: "test-render",
+             chai: "bower_components/chai/chai"
+         }
+     });
+     requirejs([
+         "unit/shape/2d_primitives",
+         "unit/shape/attributes",
+         "unit/shape/vertex",
+         "unit/shape/curves",
+         "unit/io/save",
+         "unit/io/save-svg",
+         "unit/io/save-frames",
+         "unit/rendering/rendering"
+     ], function() {
+         mocha.run();
+     });
+    </script>
+</body>

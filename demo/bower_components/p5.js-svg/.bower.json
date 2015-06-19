@@ -1,0 +1,15 @@
+{
+  "name": "p5.js-svg",
+  "homepage": "https://github.com/zenozeng/p5.js-svg",
+  "version": "0.2.0",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.0",
+    "commit": "511bda6e622a6ab9a6a7248c21df6e0ca95bbb1d"
+  },
+  "_source": "https://github.com/zenozeng/p5.js-svg.git",
+  "_target": "~0.2.0",
+  "_originalSource": "https://github.com/zenozeng/p5.js-svg.git",
+  "_direct": true
+}
