@@ -1,7 +1,7 @@
 (function() {
     // string html
     // string styles
-    var print = function(html, styles) {
+    var print = function(filename, html, styles) {
         // note that window.print might be overridden by p5.js
         var iframe = document.createElement("iframe");
         iframe.height = 0;
@@ -9,6 +9,8 @@
         document.body.appendChild(iframe);
         var doc = iframe.contentDocument || iframe.contentWindow.documen;
         var win = iframe.contentWindow;
+
+
         var style = doc.createElement('style');
         style.innerHTML = styles;
         doc.head.appendChild(style);
@@ -16,7 +18,15 @@
         div.innerHTML = html;
         doc.body.appendChild(div);
         win.focus(); // required for IE
+
+        // change the filename for print
+        var _title = document.title;
+        document.title = filename;
+        doc.title = filename;
+
         win.print();
+
+        document.title = _title;
         iframe.remove();
     };
 
@@ -28,11 +38,12 @@
     window.draw = function() {
         ellipse(500, 500, 500, 500);
         noLoop();
+        window.mouseClicked();
     };
 
     window.mouseClicked = function() {
         var svg = document.querySelector('svg');
         svg = (new XMLSerializer()).serializeToString(svg);
-        print(svg, '@page { size: 100mm 100mm; }');
+        print('filename', svg, '@page { size: 100mm 100mm; }');
     };
 })();
