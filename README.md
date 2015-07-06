@@ -6,6 +6,22 @@ Online Demo: https://zenozeng.github.io/p5.js-pdf/demo/
 
 See the discussion here: https://github.com/processing/p5.js/issues/373
 
+## FAQ
+
+### Why not use jsPDF or pdfkit?
+
+Seems that PDF doesn't support embed SVG difrectly. jsPDF's SVG support is buggy and very limited. I found that maybe using [pdfkit](https://github.com/devongovett/pdfkit/blob/86c94d2c19a455f8d48d65c0f72f74e6ec9f88ac/lib/mixins/vector.coffee) is somehow better. But this library is also limited and may need a lot of work to make it work.
+
+Since in most cases, we only need to export PDF for ourselves, so I think it is acceptable to use [p5.SVG](https://github.com/zenozeng/p5.js-svg/) & window.print (print to pdf) to do this, since the browser's print function support vector by default and could work even the element was modified by third party library and this will avoid crashing due to creating large files in memory. BTW, browser's print support custom size (css3 @page) and filename (document.title) (test shows it works on chrome but buggy on firefox).
+
+
+## Browser Compatibility
+
+Browser | Print to PDF | Custom Size | Custom Filename
+--|--
+Chrome | Yes | Yes | Yes
+Firefox | Yes | Buggy due to a long stand bug | Not tested
+
 ## Usage
 
 ```javascript
@@ -36,26 +52,6 @@ setTimeout(function() {
 ## Full Documentation
 
 https://zenozeng.github.io/p5.js-pdf/doc/p5.PDF.html
-
-## FAQ
-
-### Browser Compatibility
-
-Basically, it should work in the latest versions of evergreen browsers and IE10+.
-Note that even in IE11, due to the lack of support to download attrbute,
-`pdf.save(filename)` may simply open PDF directly instead.
-
-### Why not use PNG by default?
-
-Chrome may crash when there are too many PNG in jsPDF.
-
-See also:
-
-- https://github.com/MrRio/jsPDF/issues/359
-
-- https://github.com/MrRio/jsPDF/issues/300
-
-However, if you must, you can use `new p5.PDF({imageType: 'PNG'})`.
 
 ## License (MIT)
 
