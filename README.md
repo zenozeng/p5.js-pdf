@@ -1,8 +1,10 @@
-# p5.js-pdf
+# p5.pdf
 
 A simple PDF export module for p5.js.
 
 Online Demo: https://zenozeng.github.io/p5.js-pdf/demo/
+
+See the discussion here: https://github.com/processing/p5.js/issues/373
 
 ## Usage
 
