@@ -21,6 +21,8 @@ Browser | Print to PDF | Custom Size | Custom Filename
 --------|--------------|-------------|----------------
 Chrome  | Yes          | Yes         | Yes
 Firefox | Yes          | Buggy due to a long stand bug | Not tested
+IE9     | Need Primo PDF | Not tested | Not tested
+Safari  | Not tested   | Not tested  | Not tested
 
 ## Usage
 
