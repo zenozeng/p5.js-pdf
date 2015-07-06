@@ -23,7 +23,7 @@
 
  (function (root, factory) {
      if (typeof define === 'function' && define.amd) {
-         define('p5.svg', ['p5'], function (p5) {
+         define('p5.pdf', ['p5', 'p5.svg'], function (p5) {
              factory(p5);
          });
      }
@@ -34,5 +34,88 @@
          factory(root['p5']);
      }
  }(this, function (p5) {
-     
- });
+
+    "use strict";
+
+    /**
+     * Create a new p5.PDF instance.
+     *
+     * @class p5.PDF
+     * @param {Number} width - Width of PDF Frame
+     * @param {Number} height - Height of PDF Frame
+     * @return {p5.PDF} a p5.PDF instance
+     */
+     function PDF(width, height) {
+         if (typeof p5.prototype.createSVG == "undefined") {
+             throw new Error('Please include p5.svg before using p5.pdf.');
+         }
+         this.width = width;
+         this.height = height;
+         this.elements = [];
+     }
+
+     /**
+      * Open new page.
+      *
+      * @instance
+      * @function nextPage
+      * @memberof p5.PDF
+      */
+     PDF.prototype.nextPage = function() {
+         var div = document.createElement('div');
+         div.className = "page-break";
+         this.elements.push(div);
+     };
+
+     PDF.prototype.nextColumn = function() {
+         var div = document.createElement('div');
+         div.className = "column-gap";
+         this.elements.push(div);
+     };
+
+     PDF.prototype.nextRow = function() {
+         var div = document.createElement('div');
+         div.className = "row-gap";
+         this.elements.push(div);
+     };
+
+     PDF.prototype.beginRecord = function() {
+     };
+
+     PDF.prototype.endRecord = function() {
+     };
+
+     PDF.styles = [
+         ".page-break {page-break-after: always;}",
+         ".column-gap {display: inline-block;}"
+     ];
+
+    /**
+     * Save current PDF using window.print.
+     *
+     * @function save
+     * @memberof p5.PDF
+     * @param {Object} options - The options for generating pdf
+     * @param {String} options.filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {Object} options.margin - Margins for PDF Page {top, right, bottom, left}
+     * @param {String} options.margin.top - marginTop (eg. '1mm', '10px'), defaults to 0
+     * @param {String} options.margin.right - marginRight in mm, defaults to 0
+     * @param {String} options.margin.bottom - marginBottom in mm, defaults to 0
+     * @param {String} options.margin.left - marginLeft in mm, defaults to 0
+     * @param {String} options.columnGap - Size of the gap between columns (eg. '1mm', '10px'), defaults to 0
+     * @param {String} options.rowGap - Size of the gap between rows, defaults to 0
+     */
+     PDF.prototype.save = function(options) {
+         var styles = PDF.styles.concat();
+
+         if (typeof options.columnGap !== "undefined") {
+             styles.push(".column-gap {padding-left: " + options.columnGap + "}");
+         }
+
+         if (typeof options.rowGap !== "undefined") {
+             styles.push(".row-gap {padding-top: " + options.rowGap + "}");
+         }
+     };
+
+     p5.PDF = PDF;
+ }));
