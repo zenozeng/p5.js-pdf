@@ -18,9 +18,9 @@ Since in most cases, we only need to export PDF for ourselves, so I think it is 
 ## Browser Compatibility
 
 Browser | Print to PDF | Custom Size | Custom Filename
---|--
-Chrome | Yes | Yes | Yes
-Firefox | Yes | Buggy due to a long stand bug | Not tested
+--------|--------------|-------------|----------------
+Chrome  | Yes          | Yes         | Yes
+Firefox | Yes          | Buggy due to a long stand bug | Not tested
 
 ## Usage
 
