@@ -20,7 +20,7 @@ Since in most cases, we only need to export PDF for ourselves, so I think it is 
 Browser | Print to PDF | Custom Size | Custom Filename
 --------|--------------|-------------|----------------
 Chrome  | Yes          | Yes         | Yes
-Firefox | Yes          | Buggy due to a long stand bug | Not tested
+Firefox | Yes          | Buggy due to [bug#851937](https://bugzilla.mozilla.org/show_bug.cgi?id=851937) | Not tested
 IE9     | Need Primo PDF | Not tested | Not tested
 Safari  | Not tested   | Not tested  | Not tested
 
@@ -135,7 +135,5 @@ npm run build
 ```
 
 ## Links
-
-- [jsPDF Doc](http://mrrio.github.io/jsPDF/doc/symbols/jsPDF.html)
 
 - [Processing PDF Export](https://processing.org/reference/libraries/pdf/)
