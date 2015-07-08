@@ -115,6 +115,10 @@
          if (typeof options.rowGap !== "undefined") {
              styles.push(".row-gap {padding-top: " + options.rowGap + "}");
          }
+
+         styles = styles.join('\n');
+         var style = document.createElement('style');
+         style.innerHTML = styles;
      };
 
      p5.PDF = PDF;
