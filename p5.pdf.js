@@ -41,9 +41,10 @@
       * Print given elements using iframe
       *
       * @param {String} filename
-      * @param {Array} elements
+      * @param {Array} elements Array of Elements
+      * @param {Array} styles Array of style string
       */
-     var print = function(filename, elements) {
+     var print = function(filename, elements, styles) {
         var iframe = document.createElement("iframe");
         iframe.height = 0;
         iframe.width = 0;
@@ -51,10 +52,10 @@
         var doc = iframe.contentDocument || iframe.contentWindow.documen;
         var win = iframe.contentWindow;
 
-
         var style = doc.createElement('style');
         style.innerHTML = styles;
         doc.head.appendChild(style);
+
         var div = doc.createElement('div');
         div.innerHTML = html;
         doc.body.appendChild(div);
@@ -75,18 +76,16 @@
      * Create a new p5.PDF instance.
      *
      * @class p5.PDF
-     * @param {Number} width - Width of PDF Frame
-     * @param {Number} height - Height of PDF Frame
      * @return {p5.PDF} a p5.PDF instance
      */
-     function PDF(width, height) {
+     function PDF(p5Instance) {
          if (typeof p5.prototype.createSVG == "undefined") {
              throw new Error('Please include p5.svg before using p5.pdf.');
          }
-         this.width = width;
-         this.height = height;
          this.elements = [];
-         this.graphics = this.createGraphics(width, height, 'svg');
+         this.width = p5Instance.width;
+         this.height = p5Instance.height;
+         this.graphics = this.createGraphics(p5Instance.width, p5Instance.height, 'svg');
          this.backup = {}; // key-value backup for p5.js's prototype
      }
 
@@ -174,7 +173,9 @@
 
          var styles = PDF.styles.concat();
 
-         styles.push('@page { size: 100mm 100mm; }');
+         var width = options.width || (this.width + 'px');
+         var height = options.height || (this.height + 'px');
+         styles.push('@page { size: ' + width + ' ' + height + '; }');
 
          if (typeof options.columnGap !== "undefined") {
              styles.push(".column-gap {padding-left: " + options.columnGap + "}");
@@ -193,4 +194,8 @@
      };
 
      p5.PDF = PDF;
+
+     p5.prototype.createPDF = function() {
+         return new PDF(this);
+     };
  }));

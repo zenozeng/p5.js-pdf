@@ -51,10 +51,6 @@ setTimeout(function() {
 }, 5000);
 ```
 
-## Full Documentation
-
-https://zenozeng.github.io/p5.js-pdf/doc/p5.PDF.html
-
 ## License (MIT)
 
 Copyright (c) 2015 Zeno Zeng.

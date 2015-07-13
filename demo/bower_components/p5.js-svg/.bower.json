@@ -1,15 +1,30 @@
 {
   "name": "p5.js-svg",
   "homepage": "https://github.com/zenozeng/p5.js-svg",
-  "version": "0.2.0",
-  "_release": "0.2.0",
+  "authors": [
+    "Zeno Zeng <zenoofzeng@gmail.com>"
+  ],
+  "description": "SVG runtime for p5.js.",
+  "keywords": [
+    "svg",
+    "p5"
+  ],
+  "license": "LGPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "7faa4d8959",
   "_resolution": {
-    "type": "version",
-    "tag": "v0.2.0",
-    "commit": "511bda6e622a6ab9a6a7248c21df6e0ca95bbb1d"
+    "type": "branch",
+    "branch": "master",
+    "commit": "7faa4d89599d567ae301c0c6b57594d93b8b7f88"
   },
   "_source": "https://github.com/zenozeng/p5.js-svg.git",
-  "_target": "~0.2.0",
+  "_target": "master",
   "_originalSource": "https://github.com/zenozeng/p5.js-svg.git",
   "_direct": true
 }
