@@ -45,31 +45,32 @@
       * @param {Array} styles Array of style string
       */
      var print = function(filename, elements, styles) {
-        var iframe = document.createElement("iframe");
-        iframe.height = 0;
-        iframe.width = 0;
-        document.body.appendChild(iframe);
-        var doc = iframe.contentDocument || iframe.contentWindow.documen;
-        var win = iframe.contentWindow;
+         var iframe = document.createElement("iframe");
+         iframe.height = 0;
+         iframe.width = 0;
+         document.body.appendChild(iframe);
+         var doc = iframe.contentDocument || iframe.contentWindow.documen;
+         var win = iframe.contentWindow;
 
-        var style = doc.createElement('style');
-        style.innerHTML = styles;
-        doc.head.appendChild(style);
+         var style = doc.createElement('style');
+         styles = styles.join('\n');
+         style.innerHTML = styles;
+         doc.head.appendChild(style);
 
-        var div = doc.createElement('div');
-        div.innerHTML = html;
-        doc.body.appendChild(div);
-        win.focus(); // required for IE
+         elements.forEach(function(el) {
+             doc.body.appendChild(el);
+         });
+         win.focus(); // required for IE
 
-        // change the filename for print
-        var _title = document.title;
-        document.title = filename;
-        doc.title = filename;
+         // change the filename for print
+         var _title = document.title;
+         document.title = filename;
+         doc.title = filename;
 
-        win.print(); // note that window.print might be overridden by p5.js
+         win.print(); // note that window.print might be overridden by p5.js
 
-        document.title = _title;
-        iframe.remove();
+         document.title = _title;
+         iframe.remove();
      };
 
     /**
@@ -185,12 +186,8 @@
              styles.push(".row-gap {padding-top: " + options.rowGap + "}");
          }
 
-         styles = styles.join('\n');
-         var style = document.createElement('style');
-         style.innerHTML = styles;
-
-         var elements = this.elements.concat(this.__snapshot(), style);
-         print(options.filename, elements);
+         var elements = this.elements.concat(this.__snapshot());
+         print(options.filename, elements, styles);
      };
 
      p5.PDF = PDF;
