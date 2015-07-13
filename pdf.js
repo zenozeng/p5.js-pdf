@@ -37,6 +37,40 @@
 
     "use strict";
 
+     /**
+      * Print given elements using iframe
+      *
+      * @param {String} filename
+      * @param {Array} elements
+      */
+     var print = function(filename, elements) {
+        var iframe = document.createElement("iframe");
+        iframe.height = 0;
+        iframe.width = 0;
+        document.body.appendChild(iframe);
+        var doc = iframe.contentDocument || iframe.contentWindow.documen;
+        var win = iframe.contentWindow;
+
+
+        var style = doc.createElement('style');
+        style.innerHTML = styles;
+        doc.head.appendChild(style);
+        var div = doc.createElement('div');
+        div.innerHTML = html;
+        doc.body.appendChild(div);
+        win.focus(); // required for IE
+
+        // change the filename for print
+        var _title = document.title;
+        document.title = filename;
+        doc.title = filename;
+
+        win.print(); // note that window.print might be overridden by p5.js
+
+        document.title = _title;
+        iframe.remove();
+     };
+
     /**
      * Create a new p5.PDF instance.
      *
@@ -136,7 +170,11 @@
      * @param {String} options.rowGap - Size of the gap between rows, defaults to 0
      */
      PDF.prototype.save = function(options) {
+         options = options || {};
+
          var styles = PDF.styles.concat();
+
+         styles.push('@page { size: 100mm 100mm; }');
 
          if (typeof options.columnGap !== "undefined") {
              styles.push(".column-gap {padding-left: " + options.columnGap + "}");
@@ -150,7 +188,8 @@
          var style = document.createElement('style');
          style.innerHTML = styles;
 
-         var elements = this.elements.concat(this.__snapshot());
+         var elements = this.elements.concat(this.__snapshot(), style);
+         print(options.filename, elements);
      };
 
      p5.PDF = PDF;
