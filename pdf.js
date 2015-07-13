@@ -52,7 +52,18 @@
          this.width = width;
          this.height = height;
          this.elements = [];
+         this.graphics = this.createGraphics(width, height, 'svg');
+         this.backup = {}; // key-value backup for p5.js's prototype
      }
+
+     /**
+      * Will return a clone of current SVG element
+      */
+     PDF.prototype.__snapshot = function() {
+         var svgcanvas = this.graphics.elt;
+         var svg = svgcanvas.svg;
+         var snapshot = svg.cloneNode(true);
+     };
 
      /**
       * Open new page.
@@ -62,27 +73,46 @@
       * @memberof p5.PDF
       */
      PDF.prototype.nextPage = function() {
+         this.elements.push(this.__snapshot());
          var div = document.createElement('div');
          div.className = "page-break";
          this.elements.push(div);
      };
 
      PDF.prototype.nextColumn = function() {
+         this.elements.push(this.__snapshot());
          var div = document.createElement('div');
          div.className = "column-gap";
          this.elements.push(div);
      };
 
      PDF.prototype.nextRow = function() {
+         this.elements.push(this.__snapshot());
          var div = document.createElement('div');
          div.className = "row-gap";
          this.elements.push(div);
      };
 
      PDF.prototype.beginRecord = function() {
+         var pdf = this.graphics;
+         var _this = this;
+         Object.keys(p5.prototype).filter(function(k) {
+             return typeof p5.prototype[k] === "function";
+         }).forEach(function(k) {
+             var _fn = p5.prototype[k];
+             p5.prototype[k] = function() {
+                 pdf[k].apply(undefined, arguments);
+                 _fn.apply(this, arguments);
+             };
+             _this.backup[k] = _fn;
+         });
      };
 
      PDF.prototype.endRecord = function() {
+         var fns = this.backup;
+         Object.keys(fns).forEach(function(k) {
+             p5.prototype[k] = fns[k];
+         });
      };
 
      PDF.styles = [
@@ -119,6 +149,8 @@
          styles = styles.join('\n');
          var style = document.createElement('style');
          style.innerHTML = styles;
+
+         var elements = this.elements.concat(this.__snapshot());
      };
 
      p5.PDF = PDF;
