@@ -16,28 +16,7 @@ function setup() {
         angle: Math.PI / 2
     });
 
-    // init PDF
-    pdf = new p5.PDF({ppi: 100}); // should be called after #defaultCanvas is ready
-
-    document.getElementById('open').onclick = function() {
-        window.location.href = pdf.toObjectURL();
-    };
-
-    document.getElementById('download').onclick = function() {
-        pdf.save({filename: 'perlin-noise-tree.pdf'});
-    };
-
-    document.getElementById('open-cols-rows').onclick = function() {
-        window.location.href = pdf.toObjectURL({columns: 3, rows: 4});
-    };
-
-    document.getElementById('open-landscape').onclick = function() {
-        window.location.href = pdf.toObjectURL({landscape: true});
-    };
-
-    document.getElementById('open-custom-image-margin').onclick = function() {
-        window.location.href = pdf.toObjectURL({imageMargin: {top: 5, right: 5, bottom: 5, left: 5}});
-    };
+    pdf = createPDF();
 }
 
 var perlinNoiseSeed = 1.101;
@@ -90,9 +69,7 @@ function draw() {
     var tree = queue.shift();
     if(tree) {
         drawTree(tree);
-        pdf.capture();
     } else {
         noLoop();
     }
 }
-

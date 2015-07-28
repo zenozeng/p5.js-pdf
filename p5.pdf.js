@@ -86,7 +86,9 @@
          this.elements = [];
          this.width = p5Instance.width;
          this.height = p5Instance.height;
-         this.graphics = this.createGraphics(p5Instance.width, p5Instance.height, 'svg');
+         console.log(p5Instance.createGraphics);
+         this.graphics = p5Instance.createGraphics(p5Instance.width, p5Instance.height, 'svg');
+         this.p5Instance = p5Instance;
          this.backup = {}; // key-value backup for p5.js's prototype
      }
 
@@ -136,7 +138,7 @@
              var _fn = p5.prototype[k];
              p5.prototype[k] = function() {
                  pdf[k].apply(undefined, arguments);
-                 _fn.apply(this, arguments);
+                 _fn.apply(_this.p5Instance, arguments);
              };
              _this.backup[k] = _fn;
          });
