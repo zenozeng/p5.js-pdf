@@ -17,6 +17,9 @@ function setup() {
     });
 
     pdf = createPDF();
+    document.getElementById('download').onclick = function() {
+        pdf.save({filename: 'tree.pdf'});
+    };
 }
 
 var perlinNoiseSeed = 1.101;

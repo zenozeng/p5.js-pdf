@@ -57,6 +57,7 @@
          style.innerHTML = styles;
          doc.head.appendChild(style);
 
+
          elements.forEach(function(el) {
              doc.body.appendChild(el);
          });
@@ -86,7 +87,6 @@
          this.elements = [];
          this.width = p5Instance.width;
          this.height = p5Instance.height;
-         console.log(p5Instance.createGraphics);
          this.graphics = p5Instance.createGraphics(p5Instance.width, p5Instance.height, 'svg');
          this.p5Instance = p5Instance;
          this.backup = {}; // key-value backup for p5.js's prototype
@@ -99,6 +99,7 @@
          var svgcanvas = this.graphics.elt;
          var svg = svgcanvas.svg;
          var snapshot = svg.cloneNode(true);
+         return snapshot;
      };
 
      /**
