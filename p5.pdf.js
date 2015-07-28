@@ -57,7 +57,6 @@
          style.innerHTML = styles;
          doc.head.appendChild(style);
 
-
          elements.forEach(function(el) {
              doc.body.appendChild(el);
          });
@@ -99,6 +98,7 @@
          var svgcanvas = this.graphics.elt;
          var svg = svgcanvas.svg;
          var snapshot = svg.cloneNode(true);
+         snapshot.style.display = 'inline-block';
          return snapshot;
      };
 
