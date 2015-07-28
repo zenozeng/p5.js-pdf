@@ -1354,7 +1354,7 @@ var core, p5SVGElement, svgcanvas, renderingsvg, output, src_app;
                 var node = this._userNode || document.body;
                 node.appendChild(svg);
                 console.log(this);
-                var pg = new p5.Graphics(width, height, svgCanvas, this, false);
+                var pg = new p5.Graphics(svgCanvas, this, false);
                 this._elements.push(pg);
                 var fns = [];
                 for (var p in p5.prototype) {
