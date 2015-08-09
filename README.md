@@ -19,8 +19,8 @@ Since in most cases, we only need to export PDF for ourselves, so I think it is 
 
 Browser | Operating System | Print to PDF | Custom Size | Custom Filename
 --------|------------------|--------------|---------------------------|----------------
-Chrome  | Linux            | Yes          | Yes         | Yes
-Firefox | Linux            | Yes          | Not programmatically, Buggy due to [bug#851937](https://bugzilla.mozilla.org/show_bug.cgi?id=851937) | Not tested
+Chrome 44 | Linux            | Yes          | Yes         | Yes
+Firefox 39 | Linux            | Yes          | Not programmatically, Buggy due to [bug#851937](https://bugzilla.mozilla.org/show_bug.cgi?id=851937) | Not programmatically
 IE9     | Windows          | Need Primo PDF | Not tested | Not tested
 Safari  | OS X             | Not tested   | Not tested  | Not tested
 
