@@ -71,7 +71,7 @@
          win.print(); // note that window.print might be overridden by p5.js
 
          document.title = _title;
-         iframe.remove();
+         // iframe.remove();
      };
 
     /**
@@ -164,9 +164,17 @@
 
          var styles = PDF.styles.concat();
 
+         // page size
          var width = options.width || (this.width + 'px');
          var height = options.height || (this.height + 'px');
          styles.push('@page { size: ' + width + ' ' + height + '; }');
+
+         // page margin
+         var top = options.top || 0;
+         var bottom = options.bottom || 0;
+         var left = options.left || 0;
+         var right = options.right || 0;
+         styles.push(['@page { margin: ', top, right, bottom, left, '; }'].join(' '));
 
          if (typeof options.columnGap !== "undefined") {
              styles.push(".column-gap {padding-left: " + options.columnGap + "}");
