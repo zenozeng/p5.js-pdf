@@ -1,0 +1,27 @@
+{
+  "name": "p5.pdf",
+  "version": "0.3.0",
+  "description": "A simple PDF export module for p5.js, based on p5.svg.",
+  "main": "p5.pdf.js",
+  "dependencies": {
+    "zlib-browserify": "^0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenozeng/p5.js-pdf.git"
+  },
+  "keywords": [
+    "pdf",
+    "p5.js",
+    "svg"
+  ],
+  "author": "Zeno Zeng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zenozeng/p5.js-pdf/issues"
+  }
+}
