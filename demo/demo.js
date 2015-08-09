@@ -1,6 +1,7 @@
 var queue = [];
 
 var pdf;
+var count = 0;
 
 function setup() {
     // init frame
@@ -76,5 +77,10 @@ function draw() {
         drawTree(tree);
     } else {
         noLoop();
+    }
+
+    count++;
+    if (count % 10 == 0) {
+        pdf.nextPage();
     }
 }

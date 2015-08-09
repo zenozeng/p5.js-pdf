@@ -87,7 +87,6 @@
          this.elements = [];
          this.width = p5Instance.width;
          this.height = p5Instance.height;
-         this.graphics = p5Instance.createGraphics(p5Instance.width, p5Instance.height, p5Instance.SVG);
          this.p5Instance = p5Instance;
      }
 
@@ -95,9 +94,9 @@
       * Will return a clone of current SVG element
       */
      PDF.prototype.__snapshot = function() {
-         var svgcanvas = this.graphics.elt;
-         var svg = svgcanvas.svg;
-         var snapshot = svg.cloneNode(true);
+         var graphics = this.p5Instance._graphics;
+         var elt = graphics.isSVG ? graphics.svg : graphics.elt;
+         var snapshot = elt.cloneNode(true);
          snapshot.style.display = 'inline-block';
          return snapshot;
      };
@@ -130,25 +129,17 @@
          this.elements.push(div);
      };
 
-     // this is very evil way to record
      PDF.prototype.beginRecord = function() {
-         var p = this.p5Instance;
-         var currentGraphics = p._graphics;
-         var pdfGraphics = this.graphics;
-         var _this = this;
-         for (var k in currentGraphics) {
-             console.log(k);
-         }
+         this.isRecording = true;
      };
 
      PDF.prototype.endRecord = function() {
-         var fns = this.backup;
-         Object.keys(fns).forEach(function(k) {
-             p5.prototype[k] = fns[k];
-         });
+         this.lastFrame = this.__snapshot();
+         this.isRecording = false;
      };
 
      PDF.styles = [
+         "body, html, canvas, svg {margin: 0; padding: 0}",
          ".page-break {page-break-after: always;}",
          ".column-gap {display: inline-block;}"
      ];
@@ -185,7 +176,8 @@
              styles.push(".row-gap {padding-top: " + options.rowGap + "}");
          }
 
-         var elements = this.elements.concat(this.__snapshot());
+         var lastFrame = this.isRecording ? this.__snapshot() : this.lastFrame;
+         var elements = this.elements.concat(lastFrame);
          print(options.filename, elements, styles);
      };
 
