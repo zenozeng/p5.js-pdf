@@ -4,7 +4,7 @@ var pdf;
 
 function setup() {
     // init frame
-    createCanvas(400, 400);
+    createCanvas(400, 400, SVG);
     frameRate(40);
     background(0xee);
 
