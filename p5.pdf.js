@@ -40,6 +40,7 @@
      /**
       * Print given elements using iframe
       *
+      * @private
       * @param {String} filename
       * @param {Array} elements Array of Elements
       * @param {Array} styles Array of style string
@@ -86,9 +87,8 @@
          this.elements = [];
          this.width = p5Instance.width;
          this.height = p5Instance.height;
-         this.graphics = p5Instance.createGraphics(p5Instance.width, p5Instance.height, 'svg');
+         this.graphics = p5Instance.createGraphics(p5Instance.width, p5Instance.height, p5Instance.SVG);
          this.p5Instance = p5Instance;
-         this.backup = {}; // key-value backup for p5.js's prototype
      }
 
      /**
@@ -130,19 +130,15 @@
          this.elements.push(div);
      };
 
+     // this is very evil way to record
      PDF.prototype.beginRecord = function() {
-         var pdf = this.graphics;
+         var p = this.p5Instance;
+         var currentGraphics = p._graphics;
+         var pdfGraphics = this.graphics;
          var _this = this;
-         Object.keys(p5.prototype).filter(function(k) {
-             return typeof p5.prototype[k] === "function";
-         }).forEach(function(k) {
-             var _fn = p5.prototype[k];
-             p5.prototype[k] = function() {
-                 pdf[k].apply(undefined, arguments);
-                 _fn.apply(_this.p5Instance, arguments);
-             };
-             _this.backup[k] = _fn;
-         });
+         for (var k in currentGraphics) {
+             console.log(k);
+         }
      };
 
      PDF.prototype.endRecord = function() {
