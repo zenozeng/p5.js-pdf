@@ -81,9 +81,6 @@
      * @return {p5.PDF} a p5.PDF instance
      */
      function PDF(p5Instance) {
-         if (typeof p5.RendererSVG == "undefined") {
-             throw new Error('Please include p5.svg before using p5.pdf.');
-         }
          this.elements = [];
          this.width = p5Instance.width;
          this.height = p5Instance.height;
