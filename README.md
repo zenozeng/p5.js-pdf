@@ -6,13 +6,14 @@ See the further discussion here: https://github.com/processing/p5.js/issues/373
 
 ## Examples (Please Use Google Chrome)
 
-- [TODO] Basic PDF Exporting
+http://zenozeng.github.io/p5.js-pdf/examples/
 
-- [TODO] nextColumn, nextRow and nextPage
-
-- [TODO] Custom filename, page margin, columnGap and rowGap
-
-- [TODO] Vector PDF Exporting
+- Basic PDF Exporting
+- Vector PDF Exporting
+- Multiple pages using nextPage()
+- Pause and Resume
+- 4 columns * 3 rows per page and custom page size
+- Custom filename, page margin, columnGap and rowGap
 
 ## Browser Compatibility
 
