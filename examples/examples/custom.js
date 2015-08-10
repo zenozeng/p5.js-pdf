@@ -23,9 +23,9 @@ function draw() {
                 right: '100px',
                 bottom: '100px'
             },
-            columnGap: '20px',
+            columnGap: '40px',
             rowGap: '20px',
-            width: width * 4 + 20 * 3 + 100 * 2,
+            width: width * 4 + 40 * 3 + 100 * 2,
             height: height * 3 + 20 * 2 + 100 * 2
         });
     }

@@ -71,7 +71,7 @@
          win.print(); // note that window.print might be overridden by p5.js
 
          document.title = _title;
-         // iframe.remove();
+         iframe.remove();
      };
 
     /**
@@ -202,6 +202,7 @@
          styles.push('body { width: ' + width + '; box-sizing: border-box; }');
 
          // page margin
+         options.margin = options.margin || {};
          var top = options.margin.top || 0;
          var bottom = options.margin.bottom || 0;
          var left = options.margin.left || 0;

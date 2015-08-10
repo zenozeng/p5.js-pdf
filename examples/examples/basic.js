@@ -12,7 +12,7 @@ function draw() {
     textSize(100);
     textAlign(CENTER);
     text(frameCount, width * 0.5, height * 0.5);
-    if (frameCount == 100) {
+    if (frameCount == 10) {
         noLoop();
         pdf.save();
     }

@@ -48,4 +48,6 @@ li a.current, li a:hover {
 #canvas {
     margin-left: 22px;
     border: 1px solid #ED225D;
+    width: 600px;
+    height: 200px;
 }
