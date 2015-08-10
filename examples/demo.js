@@ -5,6 +5,10 @@ var route = function() {
         window.location.hash = "basic";
         return;
     }
+    // highlight current section
+    document.querySelector('.current') && (document.querySelector('.current').className = '');
+    document.querySelector('[href="#'+section+'"]').className = 'current';
+
     // todo: remove all canvas
     var req = new XMLHttpRequest();
     req.onload = function() {
@@ -15,7 +19,7 @@ var route = function() {
             "window.draw = draw;"
         ].join('');
         eval(code + patch);
-        new p5(); // global init p5
+        new p5(null, document.getElementById("canvas")); // global init p5
     };
     req.open("GET", "examples/" + section + ".js");
     req.send();

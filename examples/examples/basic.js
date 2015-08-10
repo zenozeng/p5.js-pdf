@@ -5,7 +5,7 @@ var count = 0;
 
 function setup() {
     // init frame
-    createCanvas(400, 400, SVG);
+    createCanvas(200, 200, SVG);
     frameRate(40);
     background(0xee);
 
@@ -72,6 +72,7 @@ function draw() {
     if(tree) {
         drawTree(tree);
     } else {
+        // pdf.save();
         noLoop();
     }
 

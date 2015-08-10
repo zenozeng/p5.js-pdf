@@ -4,33 +4,22 @@
     <script src="p5.js"></script>
     <script src="p5.svg.js"></script>
     <script src="../p5.pdf.js"></script>
-    <script src="demo.js"></script>
-    <style>
-     h1 {
-         color: #333;
-     }
-     .button {
-         font-size: 16px;
-         background: #555;
-         border-radius: 5px;
-         display: inline-block;
-         padding: .5em;
-         margin-right: .5em;
-         color: #fff;
-         cursor: pointer;
-         margin-bottom: 1em;
-     }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <h1>Examples for p5.PDF</h1>
+    <hr>
     <ul>
+        <div id="canvas"></div>
         <li><a href="#basic">Basic PDF Exporting</a></li>
-        <li><a href="#next">nextColumn, nextRow and nextPage</a></li>
-        <li><a href="#custom">Custom filename, page margin, columnGap and rowGap</a></li>
         <li><a href="#vector">Vector PDF Exporting</a></li>
+        <li><a href="#next">nextColumn, nextRow and nextPage</a></li>
+        <li><a href="#pause">Pause and Resume</a></li>
+        <li><a href="#custom">Custom filename, page margin, columnGap and rowGap</a></li>
     </ul>
-    <br>
+    <hr>
     <pre id="code">
     </pre>
+    <br>
+    <script src="demo.js"></script>
 </body>
