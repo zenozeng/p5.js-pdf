@@ -98,7 +98,7 @@
              // for canvas, also copy its content
              snapshot.getContext('2d').drawImage(elt, 0, 0);
          }
-         snapshot.style.display = 'inline-block';
+         snapshot.style.display = 'float: left;';
          return snapshot;
      };
 
@@ -159,8 +159,9 @@
 
      PDF.styles = [
          "body, html, canvas, svg {margin: 0; padding: 0}",
-         ".page-break {page-break-after: always;}",
-         ".column-gap {display: inline-block;}",
+         ".page-break {clear: both; page-break-after: always;}",
+         ".column-gap {float: left;}",
+         ".row-gap {clear: both;}",
          ".empty-page {width: 1px; height: 1px}"
      ];
 
@@ -196,6 +197,7 @@
              height += 'px';
          }
          styles.push('@page { size: ' + width + ' ' + height + '; }');
+         styles.push('body { width: ' + width + '; }');
 
          // page margin
          var top = options.top || 0;
@@ -214,7 +216,9 @@
 
          var lastFrame = this.isRecording ? this.__snapshot() : this.lastFrame;
          var elements = this.elements.concat(lastFrame);
-         print(options.filename, elements, styles);
+
+         var filename = typeof filename == "undefined" ? "untitled" : filename;
+         print(filename, elements, styles);
      };
 
      p5.PDF = PDF;

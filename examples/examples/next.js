@@ -13,18 +13,19 @@ function draw() {
     textAlign(CENTER);
     text(frameCount, width * 0.5, height * 0.5);
 
-    // create 4 * 3
+    if (frameCount == 100) {
+        noLoop();
+        pdf.save({width: width * 4, height: height * 3});
+    }
+
+    // 4 columns * 3 rows per page
     if (frameCount % 12 == 0) {
         pdf.nextPage();
     } else {
-        if (frameCount % 3 == 0) {
+        if (frameCount % 4 == 0) {
             pdf.nextRow();
         } else {
             pdf.nextColumn();
         }
-    }
-    if (frameCount == 100) {
-        noLoop();
-        pdf.save({width: width * 4, height: height * 4});
     }
 }
