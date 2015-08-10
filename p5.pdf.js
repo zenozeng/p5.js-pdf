@@ -112,6 +112,10 @@
              if (this.lastFrame) {
                  this.elements.push(this.lastFrame);
                  this.lastFrame = null;
+             } else {
+                 var div = document.createElement('div');
+                 div.className = "empty-page";
+                 this.elements.push(div);
              }
          }
      };
@@ -156,7 +160,8 @@
      PDF.styles = [
          "body, html, canvas, svg {margin: 0; padding: 0}",
          ".page-break {page-break-after: always;}",
-         ".column-gap {display: inline-block;}"
+         ".column-gap {display: inline-block;}",
+         ".empty-page {width: 1px; height: 1px}"
      ];
 
     /**
