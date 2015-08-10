@@ -1,7 +1,7 @@
 {
   "name": "p5.js-pdf",
   "main": "dist/p5.pdf.js",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage": "https://github.com/zenozeng/p5.js-pdf",
   "authors": [
     "Zeno Zeng <zenoofzeng@gmail.com>"
