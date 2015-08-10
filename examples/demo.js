@@ -6,10 +6,14 @@ var route = function() {
         return;
     }
     // highlight current section
-    document.querySelector('.current') && (document.querySelector('.current').className = '');
+    document.querySelector('.current') &&
+        (document.querySelector('.current').className = '');
     document.querySelector('[href="#'+section+'"]').className = 'current';
 
-    // todo: remove all canvas
+    // remove all canvas
+    document.getElementById('defaultCanvas') &&
+        document.getElementById('defaultCanvas').remove();
+
     var req = new XMLHttpRequest();
     req.onload = function() {
         var code = req.response;

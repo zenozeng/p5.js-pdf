@@ -71,7 +71,7 @@
          win.print(); // note that window.print might be overridden by p5.js
 
          document.title = _title;
-         // iframe.remove();
+         iframe.remove();
      };
 
     /**
@@ -94,6 +94,10 @@
          var graphics = this.p5Instance._graphics;
          var elt = graphics.isSVG ? graphics.svg : graphics.elt;
          var snapshot = elt.cloneNode(true);
+         if (elt.nodeName.toLowerCase() === 'canvas') {
+             // for canvas, also copy its content
+             snapshot.getContext('2d').drawImage(elt, 0, 0);
+         }
          snapshot.style.display = 'inline-block';
          return snapshot;
      };
