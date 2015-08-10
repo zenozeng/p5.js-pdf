@@ -1,7 +1,7 @@
 var route = function() {
     var section = window.location.hash;
     section = section.replace(/#/g, "");
-    if (["basic", "next", "custom", "vector", "pause"].indexOf(section) === -1) {
+    if (["basic", "next", "custom", "vector", "pause", "pages"].indexOf(section) === -1) {
         window.location.hash = "basic";
         return;
     }
@@ -34,5 +34,8 @@ var route = function() {
 
 route();
 
-window.onhashchange = route;
+window.onhashchange = function() {
+    route();
+    window.noLoop();
+};
 

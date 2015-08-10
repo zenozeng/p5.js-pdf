@@ -171,6 +171,8 @@
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
      * @param {String} options.filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {String} options.width - Page width, defaults to canvas width
+     * @param {String} options.height - Page height, defaults to canvas height
      * @param {Object} options.margin - Margins for PDF Page {top, right, bottom, left}
      * @param {String} options.margin.top - marginTop (eg. '1mm', '10px'), defaults to 0
      * @param {String} options.margin.right - marginRight in mm, defaults to 0
@@ -185,8 +187,14 @@
          var styles = PDF.styles.concat();
 
          // page size
-         var width = options.width || (this.width + 'px');
-         var height = options.height || (this.height + 'px');
+         var width = options.width || this.width + 'px';
+         var height = options.height || this.height + 'px';
+         if (typeof width === 'number') {
+             width += 'px';
+         }
+         if (typeof height === 'number') {
+             height += 'px';
+         }
          styles.push('@page { size: ' + width + ' ' + height + '; }');
 
          // page margin

@@ -12,15 +12,9 @@ function draw() {
     textSize(100);
     textAlign(CENTER);
     text(frameCount, width * 0.5, height * 0.5);
-    if (frameCount == 3) {
-        pdf.endRecord();
-    }
-    if (frameCount == 7) {
-        pdf.beginRecord();
-    }
     if (frameCount == 10) {
         noLoop();
         pdf.save();
     }
-    pdf.nextPage();
+    pdf.nextPage(); // Save current canvas and open a new page.
 }
