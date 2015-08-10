@@ -11,7 +11,7 @@ function draw() {
     fill('#ED225D');
     textSize(100);
     textAlign(CENTER);
-    text(frameCount, width / 2, height / 2);
+    text(frameCount, width * 0.5, height * 0.5);
     if (frameCount == 100) {
         noLoop();
         pdf.save();

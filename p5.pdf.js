@@ -103,6 +103,20 @@
      };
 
      /**
+      * Push current or last frame to this.elements
+      */
+     PDF.prototype.__push = function() {
+         if (this.isRecording) {
+             this.elements.push(this.__snapshot());
+         } else {
+             if (this.lastFrame) {
+                 this.elements.push(this.lastFrame);
+                 this.lastFrame = null;
+             }
+         }
+     };
+
+     /**
       * Open new page.
       *
       * @instance
@@ -110,7 +124,7 @@
       * @memberof p5.PDF
       */
      PDF.prototype.nextPage = function() {
-         this.elements.push(this.__snapshot());
+         this.__push();
          var div = document.createElement('div');
          div.className = "page-break";
          this.elements.push(div);
