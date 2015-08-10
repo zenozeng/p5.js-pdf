@@ -71,7 +71,7 @@
          win.print(); // note that window.print might be overridden by p5.js
 
          document.title = _title;
-         iframe.remove();
+         // iframe.remove();
      };
 
     /**
@@ -98,7 +98,7 @@
              // for canvas, also copy its content
              snapshot.getContext('2d').drawImage(elt, 0, 0);
          }
-         snapshot.style.display = 'float: left;';
+         snapshot.style.display = 'inline-block';
          return snapshot;
      };
 
@@ -121,7 +121,7 @@
      };
 
      /**
-      * Open new page.
+      * Save current frame and move to next page
       *
       * @instance
       * @function nextPage
@@ -159,9 +159,8 @@
 
      PDF.styles = [
          "body, html, canvas, svg {margin: 0; padding: 0}",
-         ".page-break {clear: both; page-break-after: always;}",
-         ".column-gap {float: left;}",
-         ".row-gap {clear: both;}",
+         ".page-break {page-break-before: always;}",
+         ".column-gap {display: inline-block}",
          ".empty-page {width: 1px; height: 1px}"
      ];
 
@@ -171,7 +170,7 @@
      * @function save
      * @memberof p5.PDF
      * @param {Object} options - The options for generating pdf
-     * @param {String} options.filename - Filename for your pdf file, defaults to untitled.pdf
+     * @param {String} options.filename - Filename for your pdf file, defaults to untitled
      * @param {String} options.width - Page width, defaults to canvas width
      * @param {String} options.height - Page height, defaults to canvas height
      * @param {Object} options.margin - Margins for PDF Page {top, right, bottom, left}
@@ -196,15 +195,19 @@
          if (typeof height === 'number') {
              height += 'px';
          }
-         styles.push('@page { size: ' + width + ' ' + height + '; }');
-         styles.push('body { width: ' + width + '; }');
+         styles.push('@page { size: ' + width + ' ' + height + ';}');
+         // using page's margin sometimes not work
+         // disable it, and control by other css
+         styles.push('@page { margin: 0 }');
+         styles.push('body { width: ' + width + '; box-sizing: border-box; }');
 
          // page margin
-         var top = options.top || 0;
-         var bottom = options.bottom || 0;
-         var left = options.left || 0;
-         var right = options.right || 0;
-         styles.push(['@page { margin: ', top, right, bottom, left, '; }'].join(' '));
+         var top = options.margin.top || 0;
+         var bottom = options.margin.bottom || 0;
+         var left = options.margin.left || 0;
+         var right = options.margin.right || 0;
+         styles.push(['body { padding: ', top, right, bottom, left, '; }'].join(' '));
+         styles.push(['.page-break { padding-top: ', top, '; }'].join(' '));
 
          if (typeof options.columnGap !== "undefined") {
              styles.push(".column-gap {padding-left: " + options.columnGap + "}");
@@ -217,7 +220,7 @@
          var lastFrame = this.isRecording ? this.__snapshot() : this.lastFrame;
          var elements = this.elements.concat(lastFrame);
 
-         var filename = typeof filename == "undefined" ? "untitled" : filename;
+         var filename = typeof options.filename == "undefined" ? "untitled" : options.filename;
          print(filename, elements, styles);
      };
 

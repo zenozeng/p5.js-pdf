@@ -7,7 +7,7 @@ function setup() {
 }
 
 function draw() {
-    background(255);
+    background(240);
     fill('#ED225D');
     textSize(100);
     textAlign(CENTER);
@@ -15,7 +15,19 @@ function draw() {
 
     if (frameCount == 100) {
         noLoop();
-        pdf.save({width: width * 4, height: height * 3});
+        pdf.save({
+            filename: 'helloworld',
+            margin: {
+                top: '100px',
+                left: '100px',
+                right: '100px',
+                bottom: '100px'
+            },
+            columnGap: '20px',
+            rowGap: '20px',
+            width: width * 4 + 20 * 3 + 100 * 2,
+            height: height * 3 + 20 * 2 + 100 * 2
+        });
     }
 
     // 4 columns * 3 rows per page
