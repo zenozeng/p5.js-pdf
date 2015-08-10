@@ -1,7 +1,7 @@
 var pdf;
 
 function setup() {
-    createCanvas(200, 200, P2D);
+    createCanvas(600, 200, P2D);
     pdf = createPDF();
     pdf.beginRecord();
 }
@@ -9,7 +9,7 @@ function setup() {
 function draw() {
     background(255);
     fill('#ED225D');
-    textSize(50);
+    textSize(100);
     textAlign(CENTER);
     text(frameCount, width / 2, height / 2);
     if (frameCount == 100) {

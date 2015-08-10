@@ -17,7 +17,10 @@ var route = function() {
     var req = new XMLHttpRequest();
     req.onload = function() {
         var code = req.response;
-        document.getElementById("code").innerHTML = code;
+        var elt = document.getElementById("code");
+        Rainbow.color(code, 'javascript', function(code) {
+            elt.innerHTML = code;
+        });
         var patch = [
             "window.setup = setup;",
             "window.draw = draw;"
@@ -32,3 +35,4 @@ var route = function() {
 route();
 
 window.onhashchange = route;
+
