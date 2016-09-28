@@ -91,8 +91,8 @@
       * Will return a clone of current SVG element
       */
      PDF.prototype.__snapshot = function() {
-         var graphics = this.p5Instance._graphics;
-         var elt = graphics.isSVG ? graphics.svg : graphics.elt;
+         var renderer = this.p5Instance._renderer || this.p5Instance._graphics;
+         var elt = renderer.isSVG ? renderer.svg : renderer.elt;
          var snapshot = elt.cloneNode(true);
          if (elt.nodeName.toLowerCase() === 'canvas') {
              // for canvas, also copy its content
